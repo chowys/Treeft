@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.code">
+    package="com.treeft">
    <application
         android:label="code"
         android:name="${applicationName}"

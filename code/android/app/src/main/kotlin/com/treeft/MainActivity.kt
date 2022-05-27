@@ -1,4 +1,4 @@
-package com.example.code
+package com.treeft
 
 import io.flutter.embedding.android.FlutterActivity
 

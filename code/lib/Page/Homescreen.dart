@@ -53,6 +53,24 @@ class _HomescreenState extends State<Homescreen> {
                   child: Text('Menu'),
                 ),
                 ListTile(
+                  title: const Text('Treeft Tree'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Change to tree page
+                  },
+                ),
+                ListTile(
+                  title: const Text('Settings'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    // Change to Settings
+                  },
+                ),
+                ListTile(
                   title: const Text('Logout'),
                   onTap: () {
                     // Update the state of the app
@@ -74,8 +92,8 @@ class _HomescreenState extends State<Homescreen> {
           body: const TabBarView(
             children: [
               Center(child: Text('Shopping List Page')),
-              Center(child: Text('Treeft tree')),
-              Center(child: Text('Settings')),
+              Center(child: Text('Stub Page #1')),
+              Center(child: Text('Stub Page #2')),
             ],
           ),
         ),

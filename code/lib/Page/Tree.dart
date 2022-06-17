@@ -12,6 +12,7 @@ class _TreeState extends State<Tree> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xffFFDE59),
         title: const Text("Tree"),
       ),
       body: Center(

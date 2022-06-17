@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -59,7 +60,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 signingnresetButton(context, "SIGN UP", () {
-                  FirebaseAuth.instance
+                  /*FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
@@ -67,6 +68,37 @@ class _SignupState extends State<Signup> {
                     print("Account created successfully");
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homescreen()));
+                  }).onError((error, stackTrace) {
+                    print("Error ${error.toString()}");
+                  });*/
+
+                  FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                          email: _emailTextController.text,
+                          password: _passwordTextController.text)
+                      .then((value) {
+                    print("Account created successfully");
+
+                    /*FirebaseFirestore.instance
+                        .collection('UserData')
+                        .doc(value.user?.uid)
+                        .set({
+                      "email": value.user?.email,
+                      'uid': value.user?.uid
+                    });*/
+
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Homescreen()));
+
+                    /*if (value != null && value.user != null) {
+                      FirebaseFirestore.instance
+                          .collection('UserData')
+                          .doc(value.user?.uid)
+                          .set({
+                        "email": value.user?.email,
+                        'uid': value.user.uid
+                      });
+                    }*/
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });

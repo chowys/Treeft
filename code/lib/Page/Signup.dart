@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../Reusable/reusable_widget.dart';
 import 'Homescreen.dart';
+import 'Database.dart';
 
 class Signup extends StatefulWidget {
   const Signup({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class _SignupState extends State<Signup> {
                 const SizedBox(
                   height: 20,
                 ),
-                signingnresetButton(context, "SIGN UP", () {
+                signingnresetButton(context, "SIGN UP", () async {
                   /*FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
@@ -72,36 +73,52 @@ class _SignupState extends State<Signup> {
                     print("Error ${error.toString()}");
                   });*/
 
-                  FirebaseAuth.instance
+                  /*FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
                     print("Account created successfully");
 
-                    /*FirebaseFirestore.instance
-                        .collection('UserData')
-                        .doc(value.user?.uid)
-                        .set({
-                      "email": value.user?.email,
-                      'uid': value.user?.uid
-                    });*/
 
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homescreen()));
 
-                    /*if (value != null && value.user != null) {
+                    if (value != null && value.user != null) {
                       FirebaseFirestore.instance
                           .collection('UserData')
                           .doc(value.user?.uid)
                           .set({
                         "email": value.user?.email,
-                        'uid': value.user.uid
+                        "uid": value.user?.uid,
+                        "Transactions": 0
                       });
-                    }*/
+
+                      //create another collection for listings
+                    }
+
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
-                  });
+                  });*/
+                  try {
+                    UserCredential cred = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text);
+
+                    User? user = cred.user;
+
+                    await Database().createUserData(
+                        _userNameTextController.text, 0, user?.uid);
+
+                    print("Account created successfully");
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Homescreen()));
+
+                    //return user;
+                  } catch (e) {
+                    print(e.toString());
+                  }
                 })
               ],
             ),

@@ -107,6 +107,13 @@ class _HomescreenState extends State<Homescreen> {
               Center(child: Text('Stub Page #2')),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              // Add your onPressed code here!
+            },
+            backgroundColor: Colors.green,
+            child: const Icon(Icons.navigation),
+          ),
         ),
       ),
     );

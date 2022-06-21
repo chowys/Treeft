@@ -79,13 +79,13 @@ class _SignupState extends State<Signup> {
                       .then((value) {
                     print("Account created successfully");
 
-                    /*FirebaseFirestore.instance
+                    FirebaseFirestore.instance
                         .collection('UserData')
                         .doc(value.user?.uid)
                         .set({
                       "email": value.user?.email,
                       'uid': value.user?.uid
-                    });*/
+                    });
 
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homescreen()));

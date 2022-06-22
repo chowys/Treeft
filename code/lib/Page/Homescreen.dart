@@ -1,4 +1,5 @@
 import 'package:code/Page/Login.dart';
+import 'package:code/Page/Selling.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
@@ -107,6 +108,13 @@ class _HomescreenState extends State<Homescreen> {
               Center(child: Text('Stub Page #2')),
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Selling()));
+              },
+              backgroundColor: Colors.black,
+              child: Text('Sell')),
         ),
       ),
     );

@@ -35,6 +35,7 @@ dependencies:
   firebase_core: ^1.17.0
   firebase_auth: ^3.3.18
   cloud_firestore: ^3.1.17
+ 
 
 dev_dependencies:
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -45,6 +46,17 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  carousel_pro: ^1.0.0
+  fluttertoast: ^8.0.9
+  shared_preferences: ^2.0.15
+  image_picker: ^0.8.5+3
+  cached_network_image: ^3.2.1
+  intl: ^0.17.0
+  uuid: ^3.0.6
+  flutter_typeahead: ^4.0.0
+  firebase_storage: ^10.2.18
+  
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

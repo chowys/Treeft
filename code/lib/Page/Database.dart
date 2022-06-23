@@ -25,6 +25,28 @@ class Database {
         .update({'title': title, 'price': price, 'description': description});
   }
 
+  static int fetchTransaction() {
+    final user = FirebaseAuth.instance.currentUser;
+    int trans = 0;
+
+    FirebaseFirestore.instance
+        .collection('UserData')
+        .doc(user?.uid)
+        .get()
+        .then((DocumentSnapshot<Map<String, dynamic>> ds) {
+      trans = ds.data()!['transactions'];
+      print(trans);
+      print("fetched");
+      return trans;
+    }).catchError((e) {
+      print(e);
+    });
+
+    /*print(trans);
+    print("returned");
+    return trans;*/
+  }
+
   /*Future getTransactions() async {
     int numTrans = 0;
 
@@ -40,4 +62,5 @@ class Database {
       return null;
     }
   }*/
+
 }

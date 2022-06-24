@@ -55,6 +55,10 @@ dev_dependencies:
   uuid: ^3.0.6
   flutter_typeahead: ^4.0.0
   firebase_storage: ^10.2.18
+  image_cropper: ^2.0.3
+  path_provider: ^2.0.11
+  flutter_image_compress: ^1.1.0
+  
   
 
 

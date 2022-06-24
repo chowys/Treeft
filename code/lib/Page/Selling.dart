@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Database/Products.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +6,7 @@ import '../Database/Category.dart';
 import '../Database/Products.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
+import 'dart:io' as io;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class Selling extends StatefulWidget {
@@ -27,10 +25,10 @@ class _SellingState extends State<Selling> {
   List<DocumentSnapshot> categories = <DocumentSnapshot>[];
   List<DropdownMenuItem<String>> categoriesDropDown =
       <DropdownMenuItem<String>>[];
-  String? _currentCategory;
-  File? _image1;
-  File? _image2;
-  File? _image3;
+  String _currentCategory = '';
+  var _image1;
+  var _image2;
+  var _image3;
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
 
@@ -46,8 +44,8 @@ class _SellingState extends State<Selling> {
         items.insert(
             0,
             DropdownMenuItem(
-                child: Text(categories[i].get('Categories')),
-                value: categories[i].get('Categories')));
+                child: Text(categories[i]['Category']),
+                value: categories[i]['Category']));
       });
     }
     return items;
@@ -149,7 +147,7 @@ class _SellingState extends State<Selling> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Category: ',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                         DropdownButton(
@@ -162,7 +160,6 @@ class _SellingState extends State<Selling> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: TextFormField(
-                        initialValue: '0.00',
                         controller: priceController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
@@ -177,7 +174,7 @@ class _SellingState extends State<Selling> {
                     ),
                     ElevatedButton(
                       style: TextButton.styleFrom(
-                        primary: Colors.red,
+                        primary: Colors.black,
                       ),
                       child: Text('Add product',
                           style: TextStyle(color: Colors.black)),
@@ -198,7 +195,7 @@ class _SellingState extends State<Selling> {
     setState(() {
       categories = data;
       categoriesDropDown = getCategoriesDropDown();
-      _currentCategory = categories[0].get('Categories');
+      _currentCategory = categories[0]['Category'];
     });
   }
 
@@ -206,8 +203,12 @@ class _SellingState extends State<Selling> {
     setState(() => _currentCategory = selectedCategory!);
   }
 
-  void _selectImage(Future<File> pickImage, int imageNumber) async {
-    File tempImg = await pickImage;
+  void _selectImage(Future<XFile?> pickImage, int imageNumber) async {
+    XFile? tempImg2 = await pickImage;
+    TaskSnapshot tempImg = await FirebaseStorage.instance
+        .ref(tempImg2!.path)
+        .putData(await tempImg2.readAsBytes());
+    //File tempImg = File(tempImg2.path);
     switch (imageNumber) {
       case 1:
         setState(() => _image1 = tempImg);
@@ -293,11 +294,9 @@ class _SellingState extends State<Selling> {
             "3${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
         UploadTask task3 = storage.ref().child(picture3).putFile(_image3);
 
-        TaskSnapshot snapshot1 =
-            await task1.whenComplete.then((snapshot) => snapshot);
-        TaskSnapshot snapshot2 =
-            await task2.whenComplete.then((snapshot) => snapshot);
-        task3.whenComplete.then((snapshot3) async {
+        TaskSnapshot snapshot1 = await task1.then((snapshot) => snapshot);
+        TaskSnapshot snapshot2 = await task2.then((snapshot) => snapshot);
+        task3.then((snapshot3) async {
           imageUrl1 = await snapshot1.ref.getDownloadURL();
           imageUrl2 = await snapshot2.ref.getDownloadURL();
           imageUrl3 = await snapshot3.ref.getDownloadURL();
@@ -305,7 +304,7 @@ class _SellingState extends State<Selling> {
 
           _productService.uploadProduct(
               productName: productNameController.text,
-              category: _currentCategory!,
+              category: _currentCategory,
               images: imageList,
               price: double.parse(priceController.text));
           _formKey.currentState!.reset();

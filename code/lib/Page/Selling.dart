@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Database/Products.dart';
 import 'package:flutter/material.dart';
@@ -204,20 +206,28 @@ class _SellingState extends State<Selling> {
   }
 
   void _selectImage(Future<XFile?> pickImage, int imageNumber) async {
+    //File tempImg = await pickImage;
     XFile? tempImg2 = await pickImage;
-    TaskSnapshot tempImg = await FirebaseStorage.instance
+    File tempImg = File(tempImg2!.path);
+
+    /*TaskSnapshot tempImg = await FirebaseStorage.instance
         .ref(tempImg2!.path)
         .putData(await tempImg2.readAsBytes());
+        */
+    print(tempImg);
     //File tempImg = File(tempImg2.path);
     switch (imageNumber) {
       case 1:
         setState(() => _image1 = tempImg);
+        print('Pic 1');
         break;
       case 2:
         setState(() => _image2 = tempImg);
+        print('Pic 2');
         break;
       case 3:
         setState(() => _image3 = tempImg);
+        print('Pic 3');
         break;
     }
   }

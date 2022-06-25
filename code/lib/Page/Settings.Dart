@@ -13,7 +13,7 @@ class _SettingsState extends State<Settings> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFFDE59),
-        title: const Text("Settings"),
+        title: Text('Setting', style: TextStyle(color: Colors.black)),
       ),
       body: Center(
         child: ElevatedButton(

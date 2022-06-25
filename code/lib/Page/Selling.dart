@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Database/Products.dart';
+import 'package:code/Page/Homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../Database/Category.dart';
@@ -23,6 +24,7 @@ class _SellingState extends State<Selling> {
   ProductService _productService = ProductService();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController productNameController = TextEditingController();
+  TextEditingController productDescriptionController = TextEditingController();
   final priceController = TextEditingController();
   List<DocumentSnapshot> categories = <DocumentSnapshot>[];
   List<DropdownMenuItem<String>> categoriesDropDown =
@@ -59,9 +61,15 @@ class _SellingState extends State<Selling> {
       appBar: AppBar(
         elevation: 0.1,
         backgroundColor: Color(0xffFFDE59),
-        leading: Icon(
-          Icons.close,
+        leading: IconButton(
+          icon: new Icon(Icons.close),
           color: Colors.black,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Homescreen()),
+            );
+          },
         ),
         title: Text(
           "Add Product",
@@ -168,8 +176,21 @@ class _SellingState extends State<Selling> {
                           hintText: 'Price',
                         ),
                         validator: (value) {
-                          if (value == null) {
+                          if (value?.isEmpty ?? true) {
                             return 'You must enter the product price';
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextFormField(
+                        controller: productDescriptionController,
+                        decoration:
+                            InputDecoration(hintText: 'Product description'),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'You must enter a product description';
                           }
                         },
                       ),
@@ -209,11 +230,6 @@ class _SellingState extends State<Selling> {
     //File tempImg = await pickImage;
     XFile? tempImg2 = await pickImage;
     File tempImg = File(tempImg2!.path);
-
-    /*TaskSnapshot tempImg = await FirebaseStorage.instance
-        .ref(tempImg2!.path)
-        .putData(await tempImg2.readAsBytes());
-        */
     print(tempImg);
     //File tempImg = File(tempImg2.path);
     switch (imageNumber) {
@@ -316,7 +332,8 @@ class _SellingState extends State<Selling> {
               productName: productNameController.text,
               category: _currentCategory,
               images: imageList,
-              price: double.parse(priceController.text));
+              price: double.parse(priceController.text),
+              productDescription: productDescriptionController.text);
           _formKey.currentState!.reset();
           setState(() => isLoading = false);
           Fluttertoast.showToast(

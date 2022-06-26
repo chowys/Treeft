@@ -143,7 +143,9 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   double generateEXP() {
     print('exp');
     print(trans);
-    if (trans <= 5) {
+    if (trans < 0) {
+      return 0.00;
+    } else if (trans <= 5 && trans >= 0) {
       return trans / 5.00;
     } else if (trans > 5 && trans <= 10) {
       return trans / 10.00;

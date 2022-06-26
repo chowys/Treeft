@@ -1,15 +1,15 @@
-/*import 'dart:html';
-import 'dart:async';
-import 'dart:io' as io;
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Database/Products.dart';
+import 'package:code/Page/Homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../Database/Category.dart';
 import '../Database/Products.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io' as io;
 import 'package:firebase_storage/firebase_storage.dart';
 
 class Selling extends StatefulWidget {
@@ -24,14 +24,15 @@ class _SellingState extends State<Selling> {
   ProductService _productService = ProductService();
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController productNameController = TextEditingController();
+  TextEditingController productDescriptionController = TextEditingController();
   final priceController = TextEditingController();
   List<DocumentSnapshot> categories = <DocumentSnapshot>[];
   List<DropdownMenuItem<String>> categoriesDropDown =
       <DropdownMenuItem<String>>[];
-  String? _currentCategory;
-  late File _image1;
-  File? _image2;
-  File? _image3;
+  String _currentCategory = '';
+  var _image1;
+  var _image2;
+  var _image3;
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
 
@@ -47,8 +48,8 @@ class _SellingState extends State<Selling> {
         items.insert(
             0,
             DropdownMenuItem(
-                child: Text(categories[i].get('Categories')),
-                value: categories[i].get('Categories')));
+                child: Text(categories[i]['Category']),
+                value: categories[i]['Category']));
       });
     }
     return items;
@@ -60,9 +61,15 @@ class _SellingState extends State<Selling> {
       appBar: AppBar(
         elevation: 0.1,
         backgroundColor: Color(0xffFFDE59),
-        leading: Icon(
-          Icons.close,
+        leading: IconButton(
+          icon: new Icon(Icons.close),
           color: Colors.black,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Homescreen()),
+            );
+          },
         ),
         title: Text(
           "Add Product",
@@ -120,11 +127,7 @@ class _SellingState extends State<Selling> {
                                   side: BorderSide(
                                       width: 2.5,
                                       color: Colors.black.withOpacity(0.5))),
-                              onPressed: () async {
-
-                                /*File file1 = File(( await _picker.pickImage(
-                                        source: ImageSource.gallery)).path);*/
-
+                              onPressed: () {
                                 _selectImage(
                                     _picker.pickImage(
                                         source: ImageSource.gallery),
@@ -154,7 +157,7 @@ class _SellingState extends State<Selling> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             'Category: ',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                         DropdownButton(
@@ -167,22 +170,34 @@ class _SellingState extends State<Selling> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: TextFormField(
-                        initialValue: '0.00',
                         controller: priceController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Price',
                         ),
                         validator: (value) {
-                          if (value == null) {
+                          if (value?.isEmpty ?? true) {
                             return 'You must enter the product price';
+                          }
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextFormField(
+                        controller: productDescriptionController,
+                        decoration:
+                            InputDecoration(hintText: 'Product description'),
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'You must enter a product description';
                           }
                         },
                       ),
                     ),
                     ElevatedButton(
                       style: TextButton.styleFrom(
-                        primary: Colors.red,
+                        primary: Colors.black,
                       ),
                       child: Text('Add product',
                           style: TextStyle(color: Colors.black)),
@@ -203,7 +218,7 @@ class _SellingState extends State<Selling> {
     setState(() {
       categories = data;
       categoriesDropDown = getCategoriesDropDown();
-      _currentCategory = categories[0].get('Categories');
+      _currentCategory = categories[0]['Category'];
     });
   }
 
@@ -211,20 +226,24 @@ class _SellingState extends State<Selling> {
     setState(() => _currentCategory = selectedCategory!);
   }
 
-//Future<Xfile> is passed as variable instead
-  void _selectImage(Future<File> pickImage, int imageNumber) async {
-    File tempImg = await pickImage;
-    //XFile tempImg1 = await pickImage;
-    //File tempImg2 = File(tempImg1.path);
+  void _selectImage(Future<XFile?> pickImage, int imageNumber) async {
+    //File tempImg = await pickImage;
+    XFile? tempImg2 = await pickImage;
+    File tempImg = File(tempImg2!.path);
+    print(tempImg);
+    //File tempImg = File(tempImg2.path);
     switch (imageNumber) {
       case 1:
         setState(() => _image1 = tempImg);
+        print('Pic 1');
         break;
       case 2:
         setState(() => _image2 = tempImg);
+        print('Pic 2');
         break;
       case 3:
         setState(() => _image3 = tempImg);
+        print('Pic 3');
         break;
     }
   }
@@ -311,9 +330,10 @@ class _SellingState extends State<Selling> {
 
           _productService.uploadProduct(
               productName: productNameController.text,
-              category: _currentCategory!,
+              category: _currentCategory,
               images: imageList,
-              price: double.parse(priceController.text));
+              price: double.parse(priceController.text),
+              productDescription: productDescriptionController.text);
           _formKey.currentState!.reset();
           setState(() => isLoading = false);
           Fluttertoast.showToast(
@@ -326,4 +346,4 @@ class _SellingState extends State<Selling> {
       }
     }
   }
-}*/
+}

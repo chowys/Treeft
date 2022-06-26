@@ -13,7 +13,7 @@ class CategoryService {
     _firestore.collection(ref).doc(categoryId).set({'Category': name});
   }
   */
-
+  
   Future<List<DocumentSnapshot>> getCategories() =>
       _firestore.collection(ref).get().then((snaps) {
         return snaps.docs;

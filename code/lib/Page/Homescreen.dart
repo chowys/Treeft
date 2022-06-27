@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-import 'Tree.dart';
-import 'Settings.dart';
+import 'package:code/Page/Tree.dart';
+import 'package:code/Page/Settings.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({Key? key}) : super(key: key);

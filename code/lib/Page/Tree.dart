@@ -12,7 +12,7 @@ class Tree extends StatefulWidget {
 }
 
 class _TreeState extends State<Tree> with TickerProviderStateMixin {
-  static const String _title = 'Tree';
+  static const String _title = 'Treeft Tree';
   String tree = "assets/images/Loading.jpg";
   late AnimationController controller;
   int trans = -1;
@@ -50,7 +50,10 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(_title),
+          title: const Text(
+            _title,
+            style: TextStyle(color: Colors.black),
+          ),
           backgroundColor: Color(0xffFFDE59),
         ),
         body: Container(
@@ -74,8 +77,7 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
                   if (snapshot.hasError) {
                     return const Text("Something went wrong");
                   }
-
-//snapshot has data but second condition does not fulfill
+                  
                   if (snapshot.hasData && !snapshot.data!.exists) {
                     return const Text("Document does not exist");
                   }
@@ -128,8 +130,8 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   }
 
   String generateTree() {
-    print("tree");
-    print(trans);
+    //print("tree");
+    //print(trans);
     if (trans < 5 && trans >= 0) {
       return "assets/images/Sapling.png";
     } else if (trans < 10 && trans >= 5) {
@@ -141,14 +143,14 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   }
 
   double generateEXP() {
-    print('exp');
-    print(trans);
+    //print('exp');
+    //print(trans);
     if (trans < 0) {
       return 0.00;
     } else if (trans <= 5 && trans >= 0) {
       return trans / 5.00;
     } else if (trans > 5 && trans <= 10) {
-      return trans / 10.00;
+      return (trans - 5.00) / 5.00;
     } else if (trans > 10 && trans <= 15) {
       return (trans - 10.00) / 5.00;
     }

@@ -19,14 +19,6 @@ class Database {
         {'username': username, 'transactions': transactions, 'uid': uid});
   }
 
-//for hong yuan
-  Future listingList(
-      String title, int price, String description, String? uid) async {
-    return await userList
-        .doc(uid)
-        .update({'title': title, 'price': price, 'description': description});
-  }
-
   /*static Stream<List<User>> readUsers() => FirebaseFirestore.instance
       .collection('UserData')
       .snapshots()

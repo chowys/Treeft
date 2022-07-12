@@ -1,11 +1,13 @@
 import 'package:code/Page/Login.dart';
 import 'package:code/Page/Selling.dart';
+import 'package:code/Page/chatmenu.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 import 'package:code/Page/Tree.dart';
 import 'package:code/Page/Settings.dart';
@@ -86,13 +88,41 @@ class _HomescreenState extends State<Homescreen> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Selling()));
-          },
-          backgroundColor: Colors.black,
-          child: Text('Sell')),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        backgroundColor: const Color(0xffFFDE59),
+        children: [
+          SpeedDialChild(
+            onTap: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Selling()));
+            },
+            backgroundColor: const Color(0xffFFDE59),
+            label: 'Sell',
+            child: const Icon(
+              CupertinoIcons.money_dollar,
+              color: Color.fromARGB(255, 148, 126, 27),
+              size: 30.0,
+            ),
+          ),
+          SpeedDialChild(
+            onTap: () {
+              //Navigate to chat function
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ChatRoom()),
+              );
+            },
+            backgroundColor: const Color(0xffFFDE59),
+            label: 'Chat',
+            child: const Icon(
+              CupertinoIcons.bubble_left,
+              color: Color.fromARGB(255, 155, 76, 175),
+              size: 30.0,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

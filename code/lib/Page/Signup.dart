@@ -109,7 +109,10 @@ class _SignupState extends State<Signup> {
                     User? user = cred.user;
 
                     await Database().createUserData(
-                        _userNameTextController.text, 0, user?.uid);
+                        _userNameTextController.text,
+                        0,
+                        user?.uid,
+                        _emailTextController.text);
 
                     print("Account created successfully");
                     Navigator.push(context,

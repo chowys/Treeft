@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Database/Products.dart';
 import 'package:code/Page/Homescreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../Database/Category.dart';
@@ -34,6 +35,7 @@ class _SellingState extends State<Selling> {
   var _image3;
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -327,12 +329,40 @@ class _SellingState extends State<Selling> {
           imageUrl3 = await snapshot3.ref.getDownloadURL();
           List<String> imageList = [imageUrl1, imageUrl2, imageUrl3];
 
-          _productService.uploadProduct(
+          FirebaseFirestore.instance
+              .collection('UserData')
+              .doc(user?.uid)
+              .get()
+              .then((DocumentSnapshot<Map<String, dynamic>> ds) {
+            int trans = ds.data()!['transactions'];
+            bool featured = false;
+
+            if (trans <= 5 && trans >= 0) {
+              featured = false;
+            } else if (trans > 5 && trans <= 10) {
+              featured = true;
+            } else if (trans > 10 && trans <= 15) {
+              featured = true;
+            }
+
+            _productService.uploadProduct(
+                productName: productNameController.text,
+                category: _currentCategory,
+                images: imageList,
+                price: double.parse(priceController.text),
+                productDescription: productDescriptionController.text,
+                isFeatured: featured);
+          }).catchError((e) {
+            print(e);
+          });
+
+          /*_productService.uploadProduct(
               productName: productNameController.text,
               category: _currentCategory,
               images: imageList,
               price: double.parse(priceController.text),
-              productDescription: productDescriptionController.text);
+              productDescription: productDescriptionController.text);*/
+
           _formKey.currentState!.reset();
           setState(() => isLoading = false);
           Fluttertoast.showToast(

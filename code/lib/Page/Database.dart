@@ -19,6 +19,23 @@ class Database {
         {'username': username, 'transactions': transactions, 'uid': uid});
   }
 
+  getUserByUsername(String username) {
+    return FirebaseFirestore.instance
+        .collection('UserData')
+        .where('username', isEqualTo: username)
+        .get();
+  }
+
+  createChatRoom(String chatRoomId, chatRoomMap) {
+    FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .set(chatRoomMap)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
   /*static Stream<List<User>> readUsers() => FirebaseFirestore.instance
       .collection('UserData')
       .snapshots()

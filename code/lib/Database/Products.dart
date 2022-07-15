@@ -13,7 +13,8 @@ class ProductService {
       required String category,
       required List images,
       required double price,
-      required String productDescription}) {
+      required String productDescription,
+      required bool isFeatured}) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
     var id = Uuid();
@@ -24,7 +25,8 @@ class ProductService {
       'images': images,
       'price': price,
       'category': category,
-      'description': productDescription
+      'description': productDescription,
+      'Featured': isFeatured
     });
   }
 }

@@ -8,15 +8,24 @@ class Database {
       FirebaseFirestore.instance.collection('UserData');
 
   Future<void> createUserData(
-      String username, int transactions, String? uid) async {
-    return await userList
-        .doc(uid)
-        .set({'username': username, 'transactions': transactions, 'uid': uid});
+      String username, int transactions, String? uid, String email) async {
+    return await userList.doc(uid).set({
+      'username': username,
+      'transactions': transactions,
+      'uid': uid,
+      'email': email
+    });
   }
 
-  Future updateUserList(String username, int transactions, String? uid) async {
-    return await userList.doc(uid).update(
-        {'username': username, 'transactions': transactions, 'uid': uid});
+//dont touch for now
+  Future updateUserList(
+      String username, int transactions, String? uid, String email) async {
+    return await userList.doc(uid).update({
+      'username': username,
+      'transactions': transactions,
+      'uid': uid,
+      'email': email
+    });
   }
 
   getUserByUsername(String username) {

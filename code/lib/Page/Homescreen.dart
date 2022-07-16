@@ -1,4 +1,5 @@
 import 'package:code/Models/category_model.dart';
+import 'package:code/Models/models.dart';
 import 'package:code/Reusable/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -17,21 +18,44 @@ class _HomescreenState extends State<Homescreen> {
       //Navigation Tabs
       appBar: CustomAppBar(title: 'Treeft'),
       bottomNavigationBar: CustomNavBar(),
-      body: Container(
-          child: CarouselSlider(
-        options: CarouselOptions(
-          aspectRatio: 2.0,
-          enlargeCenterPage: true,
-          enlargeStrategy: CenterPageEnlargeStrategy.height,
-          enableInfiniteScroll: false,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              child: CarouselSlider(
+                options: CarouselOptions(
+                  aspectRatio: 1.5,
+                  viewportFraction: 0.9,
+                  enlargeCenterPage: true,
+                  enlargeStrategy: CenterPageEnlargeStrategy.height,
+                  enableInfiniteScroll: false,
+                ),
+                items: Category.categories
+                    .map((category) => CarouselCard(category: category))
+                    .toList(),
+              ),
+            ),
+            SectionTitle(title: 'FEATURED'),
+            ProductCarousel(
+                products: Product.products
+                    .where((product) => product.isFeatured)
+                    .toList()),
+            SectionTitle(title: 'BROWSE ALL'),
+            ProductCarousel(
+                products: Product.products
+                    .where((product) => product.isFeatured)
+                    .toList()),
+          ],
         ),
-        items: Category.categories
-            .map((category) => CarouselCard(category: category))
-            .toList(),
-      )),
+      ),
     );
   }
 }
+
+
+
+
+
 
 
 

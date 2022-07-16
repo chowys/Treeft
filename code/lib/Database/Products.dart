@@ -17,15 +17,13 @@ class ProductService {
   }
   */
 
-  void uploadProduct({
-    required String productName,
-    required String category,
-    required List images,
-    required double price,
-    required String productDescription,
-    required bool isFeatured
-  }) {
-
+  void uploadProduct(
+      {required String productName,
+      required String category,
+      required List images,
+      required double price,
+      required String productDescription,
+      required bool isFeatured}) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
     var id = Uuid();
@@ -37,7 +35,7 @@ class ProductService {
       'price': price,
       'category': category,
       'description': productDescription,
-      'Featured': isFeatured
+      'featured': isFeatured
     });
   }
 }

@@ -1,7 +1,9 @@
+import 'package:code/Page/Screens.dart';
 import 'package:code/Page/Selling.dart';
 import 'package:code/Page/chatmenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:code/Page/WishList.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final String title;
@@ -17,8 +19,8 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       backgroundColor: Color(0xffFFDE59),
       title: Container(
         color: Color(0xffFFDE59),
-        padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 10),
-        child: Text('Treeft',
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Text(title,
             style: Theme.of(context)
                 .textTheme
                 .headline2!
@@ -41,7 +43,12 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
                 MaterialPageRoute(builder: (context) => const Selling()),
               );
             },
-            icon: Icon(CupertinoIcons.money_dollar))
+            icon: Icon(CupertinoIcons.money_dollar)),
+        IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/wishlist');
+            },
+            icon: Icon(Icons.favorite)),
       ],
     );
   }

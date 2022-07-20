@@ -1,50 +1,93 @@
+import 'package:code/Blocs/blocs.dart';
+import 'package:code/Blocs/product/product_bloc.dart';
 import 'package:code/Models/category_model.dart';
 import 'package:code/Models/models.dart';
 import 'package:code/Reusable/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Homescreen extends StatefulWidget {
-  const Homescreen({Key? key}) : super(key: key);
+class Homescreen extends StatelessWidget {
+  static const String routeName = '/';
 
-  @override
-  State<Homescreen> createState() => _HomescreenState();
-}
+  static Route route() {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: routeName),
+      builder: (_) => Homescreen(),
+    );
+  }
 
-class _HomescreenState extends State<Homescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //Navigation Tabs
       appBar: CustomAppBar(title: 'Treeft'),
-      bottomNavigationBar: CustomNavBar(),
+      bottomNavigationBar: CustomNavBar(screen: routeName),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              child: CarouselSlider(
-                options: CarouselOptions(
-                  aspectRatio: 1.5,
-                  viewportFraction: 0.9,
-                  enlargeCenterPage: true,
-                  enlargeStrategy: CenterPageEnlargeStrategy.height,
-                  enableInfiniteScroll: false,
-                ),
-                items: Category.categories
-                    .map((category) => CarouselCard(category: category))
-                    .toList(),
-              ),
+            BlocBuilder<CategoryBloc, CategoryState>(
+              builder: (context, state) {
+                if (state is CategoryLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is CategoryLoaded) {
+                  return CarouselSlider(
+                    options: CarouselOptions(
+                      aspectRatio: 1.5,
+                      viewportFraction: 0.9,
+                      enlargeCenterPage: true,
+                      enlargeStrategy: CenterPageEnlargeStrategy.height,
+                    ),
+                    items: state.categories
+                        .map((category) => CarouselCard(category: category))
+                        .toList(),
+                  );
+                } else {
+                  return Text('Something went wrong.');
+                }
+              },
             ),
             SectionTitle(title: 'FEATURED'),
-            ProductCarousel(
-                products: Product.products
-                    .where((product) => product.isFeatured)
-                    .toList()),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarousel(
+                    products: state.products
+                        .where((product) => product.isFeatured)
+                        .toList(),
+                  );
+                } else {
+                  return Text('Something went wrong.');
+                }
+              },
+            ),
             SectionTitle(title: 'BROWSE ALL'),
-            ProductCarousel(
-                products: Product.products
-                    .where((product) => product.isFeatured)
-                    .toList()),
+            BlocBuilder<ProductBloc, ProductState>(
+              builder: (context, state) {
+                if (state is ProductLoading) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                if (state is ProductLoaded) {
+                  return ProductCarousel(
+                    products: state.products
+                        .where((product) => product.isGeneral)
+                        .toList(),
+                  );
+                } else {
+                  return Text('Something went wrong.');
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -53,6 +96,7 @@ class _HomescreenState extends State<Homescreen> {
 }
 
 
+    
 
 
 

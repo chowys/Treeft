@@ -336,7 +336,9 @@ class _SellingState extends State<Selling> {
               .then((DocumentSnapshot<Map<String, dynamic>> ds) {
             int trans = ds.data()!['transactions'];
             bool featured = false;
+            String username = ds.data()!['username'];
 
+            //remember to change
             if (trans <= 5 && trans >= 0) {
               featured = false;
             } else if (trans > 5 && trans <= 10) {
@@ -351,7 +353,9 @@ class _SellingState extends State<Selling> {
                 images: imageList,
                 price: double.parse(priceController.text),
                 productDescription: productDescriptionController.text,
-                isFeatured: featured);
+                isFeatured: featured,
+                isGeneral: true,
+                userName: username);
           }).catchError((e) {
             print(e);
           });

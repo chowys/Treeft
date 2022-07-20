@@ -9,6 +9,15 @@ import '../Reusable/reusable_widget.dart';
 import 'Resetpassword.dart';
 
 class LogIn extends StatefulWidget {
+  static const String routeName = '/login';
+
+  static Route route() {
+    return MaterialPageRoute(
+      settings: RouteSettings(name: routeName),
+      builder: (_) => LogIn(),
+    );
+  }
+
   const LogIn({Key? key}) : super(key: key);
 
   @override

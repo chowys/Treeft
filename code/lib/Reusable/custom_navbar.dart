@@ -4,10 +4,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:code/Page/Tree.dart';
 import 'package:code/Page/Settings.dart';
+import 'package:code/Blocs/blocs.dart';
+import 'package:code/Models/models.dart';
 
 class CustomNavBar extends StatelessWidget {
+  final String screen;
+  final Product? product;
+
   const CustomNavBar({
     Key? key,
+    required this.screen,
+    this.product,
   }) : super(key: key);
 
   @override
@@ -17,6 +24,11 @@ class CustomNavBar extends StatelessWidget {
       child: Container(
         height: 70,
         child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          IconButton(
+              icon: Icon(Icons.home, color: Colors.black),
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              }),
           IconButton(
               icon: Icon(CupertinoIcons.tree, color: Colors.black),
               onPressed: () {

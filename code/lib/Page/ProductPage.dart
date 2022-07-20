@@ -97,7 +97,7 @@ class ProductPage extends StatelessWidget {
                                 .textTheme
                                 .headline5!
                                 .copyWith(color: Colors.white)),
-                        Text('\@' + product.userName,
+                        Text('\@' + product.username,
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5!

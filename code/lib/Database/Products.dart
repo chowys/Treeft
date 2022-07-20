@@ -19,14 +19,14 @@ class ProductService {
   */
 
   void uploadProduct({
-    required String productName,
+    required String name,
     required String category,
-    required List images,
+    required List<dynamic> images,
     required double price,
-    required String productDescription,
-    required bool isFeatured,
-    required bool isGeneral,
-    required String userName,
+    required String description,
+    required bool featured,
+    required bool general,
+    required String username,
   }) {
     final User? user = auth.currentUser;
     final uid = user!.uid;
@@ -34,15 +34,15 @@ class ProductService {
     String productId = id.v1();
 
     _firestore.collection(ref).doc(productId).set({
-      'name': productName,
+      'name': name,
       'uid': uid,
       'images': images,
       'price': price,
       'category': category,
-      'description': productDescription,
-      'featured': isFeatured,
-      'general': isGeneral,
-      'username': userName,
+      'description': description,
+      'featured': featured,
+      'general': general,
+      'username': username,
     });
   }
 }

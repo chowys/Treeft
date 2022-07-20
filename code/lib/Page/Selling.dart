@@ -348,14 +348,14 @@ class _SellingState extends State<Selling> {
             }
 
             _productService.uploadProduct(
-                productName: productNameController.text,
+                name: productNameController.text,
                 category: _currentCategory,
                 images: imageList,
                 price: double.parse(priceController.text),
-                productDescription: productDescriptionController.text,
-                isFeatured: featured,
-                isGeneral: true,
-                userName: username);
+                description: productDescriptionController.text,
+                featured: featured,
+                general: true,
+                username: username);
           }).catchError((e) {
             print(e);
           });

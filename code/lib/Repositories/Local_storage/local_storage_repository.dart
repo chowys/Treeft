@@ -20,12 +20,12 @@ class LocalStorageRepository extends BaseLocalStorageRepository {
 
   @override
   Future<void> addProductToWishlist(Box box, Product product) async {
-    await box.put(product.id, product);
+    await box.put(product.uid, product);
   }
 
   @override
   Future<void> removeProductFromWishlist(Box box, Product product) async {
-    await box.delete(product.id);
+    await box.delete(product.uid);
   }
 
   @override

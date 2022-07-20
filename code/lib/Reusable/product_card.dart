@@ -260,7 +260,7 @@ class ProductInformation extends StatelessWidget {
               Theme.of(context).textTheme.headline6!.copyWith(color: fontColor),
         ),
         Text(
-          '\@' + product.userName,
+          '\@' + product.username,
           style:
               Theme.of(context).textTheme.headline6!.copyWith(color: fontColor),
         ),

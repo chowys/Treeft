@@ -6,59 +6,59 @@ part 'product_model.g.dart';
 @HiveType(typeId: 0)
 class Product extends Equatable {
   @HiveField(0)
-  final String id;
+  final String uid;
   @HiveField(1)
   final String name;
   @HiveField(2)
   final String category;
   @HiveField(3)
-  final List<String> images;
+  final List<dynamic> images;
   @HiveField(4)
   final double price;
   @HiveField(5)
-  final bool isFeatured;
+  final bool featured;
   @HiveField(6)
-  final bool isGeneral;
+  final bool general;
   @HiveField(7)
-  final String userName;
+  final String username;
   @HiveField(8)
   final String description;
 
   const Product({
-    required this.id,
+    required this.uid,
     required this.name,
     required this.category,
     required this.images,
     required this.price,
-    required this.isFeatured,
-    required this.isGeneral,
-    required this.userName,
+    required this.featured,
+    required this.general,
+    required this.username,
     required this.description,
   });
 
   @override
   List<Object?> get props => [
-        id,
+        uid,
         name,
         category,
         images,
         price,
-        isFeatured,
-        isGeneral,
-        userName,
+        featured,
+        general,
+        username,
         description
       ];
 
   static Product fromSnapshot(DocumentSnapshot snap) {
     Product product = Product(
-        id: snap['uid'],
+        uid: snap['uid'],
         name: snap['name'],
         category: snap['category'],
         images: snap['images'],
-        price: snap['price'],
-        isFeatured: snap['featured'],
-        isGeneral: snap['general'],
-        userName: snap['username'],
+        price: (snap['price'] as num).toDouble(),
+        featured: snap['featured'],
+        general: snap['general'],
+        username: snap['username'],
         description: snap['description']);
     return product;
   }

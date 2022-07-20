@@ -61,7 +61,7 @@ class Homescreen extends StatelessWidget {
                 if (state is ProductLoaded) {
                   return ProductCarousel(
                     products: state.products
-                        .where((product) => product.isFeatured)
+                        .where((product) => product.featured)
                         .toList(),
                   );
                 } else {
@@ -80,7 +80,7 @@ class Homescreen extends StatelessWidget {
                 if (state is ProductLoaded) {
                   return ProductCarousel(
                     products: state.products
-                        .where((product) => product.isGeneral)
+                        .where((product) => product.general)
                         .toList(),
                   );
                 } else {

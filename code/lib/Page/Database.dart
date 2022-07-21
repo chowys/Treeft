@@ -35,6 +35,13 @@ class Database {
         .get();
   }
 
+  getUserByEmail(String email) {
+    return FirebaseFirestore.instance
+        .collection('UserData')
+        .where('email', isEqualTo: email)
+        .get();
+  }
+
   createChatRoom(String chatRoomId, chatRoomMap) {
     FirebaseFirestore.instance
         .collection("ChatRoom")
@@ -43,6 +50,33 @@ class Database {
         .catchError((e) {
       print(e.toString());
     });
+  }
+
+  getConversationMessages(String chatRoomId) async {
+    return FirebaseFirestore.instance
+        .collection('ChatRoom')
+        .doc(chatRoomId)
+        .collection('chats')
+        .orderBy('time')
+        .snapshots();
+  }
+
+  Future<void> addMessage(String chatRoomId, chatMessageData) async {
+    FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection("chats")
+        .add(chatMessageData)
+        .catchError((e) {
+      print(e.toString());
+    });
+  }
+
+  getUserChats(String itIsMyName) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .where('users', arrayContains: itIsMyName)
+        .snapshots();
   }
 
   /*static Stream<List<User>> readUsers() => FirebaseFirestore.instance

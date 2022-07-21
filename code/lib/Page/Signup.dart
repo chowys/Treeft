@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:code/Reusable/HelperMethods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -101,24 +102,32 @@ class _SignupState extends State<Signup> {
                     print("Error ${error.toString()}");
                   });*/
                   try {
+                    //Creates Account
                     UserCredential cred = await FirebaseAuth.instance
                         .createUserWithEmailAndPassword(
                             email: _emailTextController.text,
                             password: _passwordTextController.text);
 
+                    //Create UserData
                     User? user = cred.user;
-
                     await Database().createUserData(
                         _userNameTextController.text,
                         0,
                         user?.uid,
                         _emailTextController.text);
 
+                    //Chat Function
+                    HelperFunctions.saveUserLoggedInSharedPreference(true);
+                    HelperFunctions.saveUserNameSharedPreference(
+                        _userNameTextController.text);
+                    HelperFunctions.saveUserEmailSharedPreference(
+                        _emailTextController.text);
+
+                    //Navigation
                     print("Account created successfully");
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homescreen()));
-
-                    //return user;
                   } catch (e) {
                     print(e.toString());
                   }

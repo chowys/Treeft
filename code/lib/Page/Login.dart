@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:code/Page/Database.dart';
 import 'package:code/Page/Homescreen.dart';
 import 'package:code/Page/Signup.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -5,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import '../Reusable/HelperMethods.dart';
 import '../Reusable/reusable_widget.dart';
 import 'Resetpassword.dart';
 
@@ -18,6 +21,7 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  late QuerySnapshot snapshotUserInfo;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +55,21 @@ class _LogInState extends State<LogIn> {
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
+                    //chat method
+                    HelperFunctions.saveUserLoggedInSharedPreference(true);
+                    //chat method
+                    HelperFunctions.saveUserEmailSharedPreference(
+                        _emailTextController.text);
+
+                    Database()
+                        .getUserByEmail(_emailTextController.text)
+                        .then((val) {
+                      snapshotUserInfo = val;
+                      HelperFunctions.saveUserNameSharedPreference(
+                          snapshotUserInfo.docs[0]['username']);
+                      print(
+                          "${snapshotUserInfo.docs[0]['username']} is your Username");
+                    });
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Homescreen()));
                   }).onError((error, stackTrace) {

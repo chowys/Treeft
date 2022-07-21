@@ -1,6 +1,10 @@
+import 'package:code/Page/Database.dart';
 import 'package:code/Page/search.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../Reusable/HelperMethods.dart';
+import '../constants.dart';
 
 class ChatRoom extends StatefulWidget {
   const ChatRoom({Key? key}) : super(key: key);
@@ -33,23 +37,23 @@ class _ChatRoomState extends State<ChatRoom> {
             : Container();
       },
     );
-  }
+  }*/
 
-  @override
-  void initState() {
-    getUserInfogetChats();
-    super.initState();
-  }
-
-  getUserInfogetChats() async {
+  /*getUserInfogetChats() async {
     Constants.myName = await HelperFunctions.getUserNameSharedPreference();
-    DatabaseMethods().getUserChats(Constants.myName).then((snapshots) {
+    Database().getUserChats(Constants.myName).then((snapshots) {
       setState(() {
         chatRooms = snapshots;
         print(
             "we got the data + ${chatRooms.toString()} this is name  ${Constants.myName}");
       });
     });
+  }
+
+  @override
+  void initState() {
+    getUserInfogetChats();
+    super.initState();
   }*/
 
   @override
@@ -57,7 +61,10 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFFDE59),
-        title: const Text('Chats'),
+        title: const Text(
+          'Chats',
+          style: TextStyle(color: Colors.black),
+        ),
         elevation: 0.0,
         centerTitle: false,
         /*actions: [

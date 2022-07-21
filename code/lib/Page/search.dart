@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Page/Database.dart';
+import 'package:code/Reusable/HelperMethods.dart';
 import 'package:flutter/material.dart';
 import 'package:code/Reusable/widget.dart';
+
+import '../constants.dart';
+import 'ChatRoom.dart';
 
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
 }
+
+late String _myName;
 
 class _SearchState extends State<Search> {
   @override
@@ -18,6 +24,18 @@ class _SearchState extends State<Search> {
 
   bool isLoading = false;
   bool haveUserSearched = false;
+
+  @override
+  void initState() {
+    getUserInfo();
+    super.initState();
+  }
+
+  getUserInfo() async {
+    _myName = await HelperFunctions.getUserNameSharedPreference();
+    setState(() {});
+    print("${_myName}");
+  }
 
   Widget searchList() {
     return haveUserSearched
@@ -46,9 +64,13 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color.fromARGB(137, 34, 33, 33),
       appBar: AppBar(
         backgroundColor: const Color(0xffFFDE59),
-        title: const Text('Search'),
+        title: const Text(
+          'Search',
+          style: TextStyle(color: Colors.black),
+        ),
         elevation: 0.0,
         centerTitle: false,
       ),
@@ -63,11 +85,11 @@ class _SearchState extends State<Search> {
                   Expanded(
                       child: TextField(
                     controller: searchEditingController,
-                    style: const TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         hintText: "search username ...",
                         hintStyle: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                           fontSize: 16,
                         ),
                         border: InputBorder.none),
@@ -99,6 +121,70 @@ class _SearchState extends State<Search> {
     );
   }
 
+  //create Chatrooms, send user to convo screen, pushreplacement
+  createChatAndStartConvo(String userName) {
+    print("${userName} is the target User");
+    print("${_myName} is you");
+    if (userName != _myName) {
+      String chatRoomId = getChatRoomId(userName, _myName);
+
+      List<String> users = [userName, _myName];
+      Map<String, dynamic> chatRoomMap = {
+        "users": users,
+        "chatroomid": chatRoomId
+      };
+
+      Database().createChatRoom(chatRoomId, chatRoomMap);
+      print("${chatRoomId} is chatroom id");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ChatRoom(
+                    chatRoomId: chatRoomId,
+                  )));
+    } else {
+      print("You cannot send a message to yourself");
+    }
+  }
+
+  Widget SearchTile({required userName, required userEmail}) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                userName,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              Text(
+                userEmail,
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              )
+            ],
+          ),
+          Spacer(),
+          GestureDetector(
+            onTap: () {
+              createChatAndStartConvo(userName);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(24)),
+              child: Text(
+                "Message",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   initiateSearch() async {
     if (searchEditingController.text.isNotEmpty) {
       setState(() {
@@ -117,15 +203,28 @@ class _SearchState extends State<Search> {
       });
     }
   }
+}
 
-//create Chatrooms, send user to convo screen, pushreplacement
-  createChatAndStartConvo(String userName) {
-    //List<String> users = [userName, ];
-    //databaseMethods.createChatRoom(chatRoomId, chatRoomMap);
+getChatRoomId(String a, String b) {
+  print("getChatRoomId Succesful");
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
   }
 }
 
-class SearchTile extends StatelessWidget {
+
+
+/*getUserInfo() async {
+  -_myName = await HelperFunctions.getUserNameSharedPreference();
+  setState(() {
+
+  });
+}*/
+
+
+/*class SearchTile extends StatelessWidget {
   final String userName;
   final String userEmail;
   SearchTile({required this.userName, required this.userEmail});
@@ -150,16 +249,21 @@ class SearchTile extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          Container(
-            decoration: BoxDecoration(
-                color: Colors.blue, borderRadius: BorderRadius.circular(30)),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
-            child: const Text(
-              "Message",
+          GestureDetector(
+            onTap: () {
+              createChatAndStartConvo(userName);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.blue, borderRadius: BorderRadius.circular(30)),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+              child: const Text(
+                "Message",
+              ),
             ),
           )
         ],
       ),
     );
   }
-}
+}*/

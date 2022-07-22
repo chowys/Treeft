@@ -67,10 +67,11 @@ class _SearchState extends State<Search> {
       backgroundColor: Color.fromARGB(137, 34, 33, 33),
       appBar: AppBar(
         backgroundColor: const Color(0xffFFDE59),
-        title: const Text(
-          'Search',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text('Search',
+            style: Theme.of(context)
+                .textTheme
+                .headline2!
+                .copyWith(color: Colors.black)),
         elevation: 0.0,
         centerTitle: false,
       ),
@@ -141,6 +142,7 @@ class _SearchState extends State<Search> {
           MaterialPageRoute(
               builder: (context) => ChatRoom(
                     chatRoomId: chatRoomId,
+                    targetUser: userName,
                   )));
     } else {
       print("You cannot send a message to yourself");

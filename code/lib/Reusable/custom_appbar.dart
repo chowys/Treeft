@@ -32,7 +32,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const ChatRoom()),
+                MaterialPageRoute(builder: (context) => const ChatMenu()),
               );
             },
             icon: Icon(Icons.chat)),

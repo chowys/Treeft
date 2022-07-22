@@ -8,8 +8,9 @@ import '../constants.dart';
 
 class ChatRoom extends StatefulWidget {
   final String chatRoomId;
+  final String targetUser;
 
-  ChatRoom({required this.chatRoomId});
+  ChatRoom({required this.chatRoomId, required this.targetUser});
 
   @override
   _ChatState createState() => _ChatState();
@@ -78,13 +79,14 @@ class _ChatState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(137, 34, 33, 33),
+      backgroundColor: const Color.fromARGB(137, 34, 33, 33),
       appBar: AppBar(
         backgroundColor: const Color(0xffFFDE59),
-        title: const Text(
-          'Search',
-          style: TextStyle(color: Colors.black),
-        ),
+        title: Text(widget.targetUser,
+            style: Theme.of(context)
+                .textTheme
+                .headline2!
+                .copyWith(color: Colors.black)),
         elevation: 0.0,
         centerTitle: false,
       ),
@@ -163,19 +165,21 @@ class MessageTile extends StatelessWidget {
           top: 8, bottom: 8, left: sendByMe ? 0 : 24, right: sendByMe ? 24 : 0),
       alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin:
-            sendByMe ? EdgeInsets.only(left: 30) : EdgeInsets.only(right: 30),
-        padding: EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+        margin: sendByMe
+            ? const EdgeInsets.only(left: 30)
+            : const EdgeInsets.only(right: 30),
+        padding:
+            const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
         decoration: BoxDecoration(
             borderRadius: sendByMe
-                ? BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomLeft: Radius.circular(23))
-                : BorderRadius.only(
-                    topLeft: Radius.circular(23),
-                    topRight: Radius.circular(23),
-                    bottomRight: Radius.circular(23)),
+                ? const BorderRadius.only(
+                    topLeft: const Radius.circular(23),
+                    topRight: const Radius.circular(23),
+                    bottomLeft: const Radius.circular(23))
+                : const BorderRadius.only(
+                    topLeft: const Radius.circular(23),
+                    topRight: const Radius.circular(23),
+                    bottomRight: const Radius.circular(23)),
             gradient: LinearGradient(
               colors: sendByMe
                   ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
@@ -183,7 +187,7 @@ class MessageTile extends StatelessWidget {
             )),
         child: Text(message,
             textAlign: TextAlign.start,
-            style: TextStyle(
+            style: const TextStyle(
                 color: Colors.white,
                 fontSize: 16,
                 fontFamily: 'OverpassRegular',

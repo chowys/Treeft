@@ -61,7 +61,8 @@ class Database {
         .snapshots();
   }
 
-  Future<void> addMessage(String chatRoomId, chatMessageData) async {
+  Future<void> addMessage(
+      String chatRoomId, chatMessageData, List<String> users) async {
     FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
@@ -70,12 +71,17 @@ class Database {
         .catchError((e) {
       print(e.toString());
     });
+
+    //update hasMessages when there is at least 1 message
+    FirebaseFirestore.instance.collection("ChatRoom").doc(chatRoomId).update(
+        {"users": users, "chatroomid": chatRoomId, "hasMessages": true});
   }
 
   getUserChats(String myUserName) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")
         .where('users', arrayContains: myUserName)
+        .where("hasMessages", isEqualTo: true)
         .snapshots();
   }
 

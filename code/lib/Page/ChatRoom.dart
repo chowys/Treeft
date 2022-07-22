@@ -68,7 +68,8 @@ class _ChatState extends State<ChatRoom> {
         'time': DateTime.now().millisecondsSinceEpoch,
       };
 
-      Database().addMessage(widget.chatRoomId, chatMessageMap);
+      List<String> users = [widget.targetUser, _myName];
+      Database().addMessage(widget.chatRoomId, chatMessageMap, users);
 
       setState(() {
         messageEditingController.text = "";

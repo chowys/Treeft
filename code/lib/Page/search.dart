@@ -24,6 +24,7 @@ class _SearchState extends State<Search> {
 
   bool isLoading = false;
   bool haveUserSearched = false;
+  bool roomExists = false;
 
   @override
   void initState() {
@@ -132,10 +133,19 @@ class _SearchState extends State<Search> {
       List<String> users = [userName, _myName];
       Map<String, dynamic> chatRoomMap = {
         "users": users,
-        "chatroomid": chatRoomId
+        "chatroomid": chatRoomId,
+        "hasMessages": false
       };
 
-      Database().createChatRoom(chatRoomId, chatRoomMap);
+//if Chatroom alr exists, do not create new one
+      /*updateRoomExists(chatRoomId);
+
+      if (!roomExists) {
+        Database().createChatRoom(chatRoomId, chatRoomMap);
+        print('new room created');
+      }*/
+      createRoom(chatRoomId, chatRoomMap);
+
       print("${chatRoomId} is chatroom id");
       Navigator.push(
           context,
@@ -148,6 +158,32 @@ class _SearchState extends State<Search> {
       print("You cannot send a message to yourself");
     }
   }
+
+  //creates room according to if it exists already
+  createRoom(String chatRoomId, Map<String, dynamic> chatRoomMap) async {
+    DocumentSnapshot ds = await FirebaseFirestore.instance
+        .collection('ChatRoom')
+        .doc(chatRoomId)
+        .get();
+
+    roomExists = ds.exists;
+
+    if (!roomExists) {
+      await Database().createChatRoom(chatRoomId, chatRoomMap);
+      print('new room created');
+    }
+  }
+
+//assigns true if room exists
+  /*updateRoomExists(String chatRoomId) async {
+    DocumentSnapshot ds = await FirebaseFirestore.instance
+        .collection('ChatRoom')
+        .doc(chatRoomId)
+        .get();
+
+    roomExists = ds.exists;
+    print(roomExists);
+  }*/
 
   Widget SearchTile({required userName, required userEmail}) {
     return Container(
@@ -172,17 +208,33 @@ class _SearchState extends State<Search> {
             onTap: () {
               createChatAndStartConvo(userName);
             },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(24)),
-              child: Text(
-                "Message",
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            ),
+            child: checkUserValidity(userName),
           )
         ],
+      ),
+    );
+  }
+
+//prevent self-messaging
+  Widget checkUserValidity(String targetUser) {
+    if (targetUser != _myName) {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        decoration: BoxDecoration(
+            color: Colors.blue, borderRadius: BorderRadius.circular(24)),
+        child: Text(
+          "Message",
+          style: TextStyle(color: Colors.white, fontSize: 16),
+        ),
+      );
+    }
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(24)),
+      child: Text(
+        "Message",
+        style: TextStyle(color: Colors.white, fontSize: 16),
       ),
     );
   }
@@ -209,7 +261,9 @@ class _SearchState extends State<Search> {
 
 getChatRoomId(String a, String b) {
   print("getChatRoomId Succesful");
-  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+  print("a is ${a}");
+  print("b is ${b}");
+  if (a.compareTo(b) == 1) {
     return "$b\_$a";
   } else {
     return "$a\_$b";

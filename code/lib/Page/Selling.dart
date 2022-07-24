@@ -31,8 +31,6 @@ class _SellingState extends State<Selling> {
       <DropdownMenuItem<String>>[];
   String _currentCategory = '';
   var _image1;
-  var _image2;
-  var _image3;
   bool isLoading = false;
   final ImagePicker _picker = ImagePicker();
   final user = FirebaseAuth.instance.currentUser;
@@ -103,41 +101,41 @@ class _SellingState extends State<Selling> {
                                 child: _displayChild1()),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    side: BorderSide(
-                                        width: 2.5,
-                                        color: Colors.black.withOpacity(0.5))),
-                                onPressed: () {
-                                  _selectImage(
-                                      _picker.pickImage(
-                                          source: ImageSource.gallery),
-                                      2);
-                                },
-                                child: _displayChild2()),
-                          ),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: OutlinedButton(
-                              style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                      width: 2.5,
-                                      color: Colors.black.withOpacity(0.5))),
-                              onPressed: () {
-                                _selectImage(
-                                    _picker.pickImage(
-                                        source: ImageSource.gallery),
-                                    3);
-                              },
-                              child: _displayChild3(),
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: OutlinedButton(
+                        //         style: OutlinedButton.styleFrom(
+                        //             side: BorderSide(
+                        //                 width: 2.5,
+                        //                 color: Colors.black.withOpacity(0.5))),
+                        //         onPressed: () {
+                        //           _selectImage(
+                        //               _picker.pickImage(
+                        //                   source: ImageSource.gallery),
+                        //               2);
+                        //         },
+                        //         child: _displayChild2()),
+                        //   ),
+                        // ),
+                        // Expanded(
+                        //   child: Padding(
+                        //     padding: const EdgeInsets.all(8.0),
+                        //     child: OutlinedButton(
+                        //       style: OutlinedButton.styleFrom(
+                        //           side: BorderSide(
+                        //               width: 2.5,
+                        //               color: Colors.black.withOpacity(0.5))),
+                        //       onPressed: () {
+                        //         _selectImage(
+                        //             _picker.pickImage(
+                        //                 source: ImageSource.gallery),
+                        //             3);
+                        //       },
+                        //       child: _displayChild3(),
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                     Padding(
@@ -228,25 +226,33 @@ class _SellingState extends State<Selling> {
   }
 
   void _selectImage(Future<XFile?> pickImage, int imageNumber) async {
-    //File tempImg = await pickImage;
     XFile? tempImg2 = await pickImage;
-    File tempImg = File(tempImg2!.path);
-    print(tempImg);
-    //File tempImg = File(tempImg2.path);
-    switch (imageNumber) {
-      case 1:
-        setState(() => _image1 = tempImg);
-        print('Pic 1');
-        break;
-      case 2:
-        setState(() => _image2 = tempImg);
-        print('Pic 2');
-        break;
-      case 3:
-        setState(() => _image3 = tempImg);
-        print('Pic 3');
-        break;
+    if (pickImage == null || tempImg2 == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('No image is selected'),
+        ),
+      );
+    } else {
+      File tempImg = File(tempImg2.path);
+      print(tempImg);
+      //File tempImg = File(tempImg2.path);
+      switch (imageNumber) {
+        case 1:
+          setState(() => _image1 = tempImg);
+          print('Pic 1');
+          break;
+        // case 2:
+        //   setState(() => _image2 = tempImg);
+        //   print('Pic 2');
+        //   break;
+        // case 3:
+        //   setState(() => _image3 = tempImg);
+        //   print('Pic 3');
+        //   break;
+      }
     }
+    //File tempImg = await pickImage;
   }
 
   Widget _displayChild1() {
@@ -267,67 +273,69 @@ class _SellingState extends State<Selling> {
     }
   }
 
-  Widget _displayChild2() {
-    if (_image2 == null) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(14, 50, 14, 50),
-        child: new Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      );
-    } else {
-      return Image.file(
-        _image2,
-        fit: BoxFit.fill,
-        width: double.infinity,
-      );
-    }
-  }
+  // Widget _displayChild2() {
+  //   if (_image2 == null) {
+  //     return Padding(
+  //       padding: const EdgeInsets.fromLTRB(14, 50, 14, 50),
+  //       child: new Icon(
+  //         Icons.add,
+  //         color: Colors.black,
+  //       ),
+  //     );
+  //   } else {
+  //     return Image.file(
+  //       _image2,
+  //       fit: BoxFit.fill,
+  //       width: double.infinity,
+  //     );
+  //   }
+  // }
 
-  Widget _displayChild3() {
-    if (_image3 == null) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(14, 50, 14, 50),
-        child: new Icon(
-          Icons.add,
-          color: Colors.black,
-        ),
-      );
-    } else {
-      return Image.file(
-        _image3,
-        fit: BoxFit.fill,
-        width: double.infinity,
-      );
-    }
-  }
+  // Widget _displayChild3() {
+  //   if (_image3 == null) {
+  //     return Padding(
+  //       padding: const EdgeInsets.fromLTRB(14, 50, 14, 50),
+  //       child: new Icon(
+  //         Icons.add,
+  //         color: Colors.black,
+  //       ),
+  //     );
+  //   } else {
+  //     return Image.file(
+  //       _image3,
+  //       fit: BoxFit.fill,
+  //       width: double.infinity,
+  //     );
+  //   }
+  // }
 
   void validateAndUpload() async {
     if (_formKey.currentState!.validate()) {
       setState(() => isLoading = true);
-      if (_image1 != null && _image2 != null && _image3 != null) {
+      if (_image1 != null) {
         String imageUrl1;
-        String imageUrl2;
-        String imageUrl3;
         final FirebaseStorage storage = FirebaseStorage.instance;
         final String picture1 =
             "1${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
         UploadTask task1 = storage.ref().child(picture1).putFile(_image1);
-        final String picture2 =
-            "2${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-        UploadTask task2 = storage.ref().child(picture2).putFile(_image2);
-        final String picture3 =
-            "3${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
-        UploadTask task3 = storage.ref().child(picture3).putFile(_image3);
+        // final String picture2 =
+        //     "2${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
+        // UploadTask task2 = storage.ref().child(picture2).putFile(_image2);
+        // final String picture3 =
+        //     "3${DateTime.now().millisecondsSinceEpoch.toString()}.jpg";
+        // UploadTask task3 = storage.ref().child(picture3).putFile(_image3);
 
-        TaskSnapshot snapshot1 = await task1.then((snapshot) => snapshot);
-        TaskSnapshot snapshot2 = await task2.then((snapshot) => snapshot);
-        task3.then((snapshot3) async {
-          imageUrl1 = await snapshot1.ref.getDownloadURL();
-          imageUrl2 = await snapshot2.ref.getDownloadURL();
-          imageUrl3 = await snapshot3.ref.getDownloadURL();
-          List<String> imageList = [imageUrl1, imageUrl2, imageUrl3];
+        // TaskSnapshot snapshot1 = await task1.then((snapshot) => snapshot);
+        // TaskSnapshot snapshot2 = await task2.then((snapshot) => snapshot);
+        // task3.then((snapshot3) async {
+        //   imageUrl1 = await snapshot1.ref.getDownloadURL();
+        //   imageUrl2 = await snapshot2.ref.getDownloadURL();
+        //   imageUrl3 = await snapshot3.ref.getDownloadURL();
+        task1.then((snapshot) async {
+          imageUrl1 = await snapshot.ref.getDownloadURL();
+          List<String> imageList = [
+            imageUrl1,
+          ];
 
           FirebaseFirestore.instance
               .collection('UserData')

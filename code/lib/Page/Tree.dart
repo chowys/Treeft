@@ -67,39 +67,7 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              //FUTURE BUILDER HERE TO LOAD TREE
-              /*FutureBuilder<DocumentSnapshot>(
-                future: users.doc(uid).get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> snapshot) {
-                  print(uid);
-
-                  if (snapshot.hasError) {
-                    return const Text("Something went wrong");
-                  }
-                  
-                  if (snapshot.hasData && !snapshot.data!.exists) {
-                    return const Text("Document does not exist");
-                  }
-
-                  print("has data");
-                  print(snapshot.hasData);
-                  print("exists");
-                  print(snapshot.data!.exists);
-
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> data =
-                        snapshot.data!.data() as Map<String, dynamic>;
-                    return Image.asset(generateTree(data['transactions']),
-                        height: 300, width: 300);
-                  }
-
-                  return const Text("loading");
-                },
-              ),*/
-
               Image.asset(generateTree(), height: 300, width: 300),
-
               LinearPercentIndicator(
                 width: 180.0,
                 percent: generateEXP(),
@@ -118,13 +86,6 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
             ],
           ),
         ),
-        /*floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.green,
-          onPressed: () {
-            //Text(Database.fetchTransaction());
-          },
-          child: Text('Check'),
-        ),*/
       ),
     );
   }

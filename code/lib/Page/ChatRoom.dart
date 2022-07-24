@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:code/Page/Database.dart';
+import 'package:code/Page/offers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -27,8 +29,9 @@ class _ChatState extends State<ChatRoom> {
     getUserInfo();
     print(Database().getConversationMessages(widget.chatRoomId));
     //.then is used on a null value need check why
-    Database().getConversationMessages(widget.chatRoomId).then((val) {
+    Database().getConversationMessages(widget.chatRoomId).then((val) async {
       print("${val} is val");
+
       setState(() {
         chats = val;
       });
@@ -47,29 +50,73 @@ class _ChatState extends State<ChatRoom> {
       stream: chats,
       builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
         return snapshot.hasData
-            ? ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: (context, index) {
-                  return MessageTile(
-                    message: snapshot.data!.docs[index]["message"],
-                    sendByMe: _myName == snapshot.data!.docs[index]["sendBy"],
-                  );
-                })
+            ? SizedBox(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * .72,
+                child: ListView.builder(
+                    itemCount: snapshot.data?.docs.length,
+                    itemBuilder: (context, index) {
+                      return MessageTile(
+                        message: snapshot.data!.docs[index]["message"],
+                        sendByMe:
+                            _myName == snapshot.data!.docs[index]["sendBy"],
+                        isOffer: snapshot.data!.docs[index]["isOffer"],
+                      );
+                    }),
+              )
             : Container();
       },
     );
   }
 
   addMessage() {
+    String msgID = FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(widget.chatRoomId)
+        .collection("chats")
+        .doc()
+        .id;
+
     if (messageEditingController.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         "sendBy": _myName,
         "message": messageEditingController.text,
         'time': DateTime.now().millisecondsSinceEpoch,
+        'isOffer': false,
+        'accepted': false,
+        'msgID': msgID,
+        'senderID': FirebaseAuth.instance.currentUser!.uid
       };
 
       List<String> users = [widget.targetUser, _myName];
-      Database().addMessage(widget.chatRoomId, chatMessageMap, users);
+      Database().addMessage(widget.chatRoomId, chatMessageMap, users, msgID);
+
+      setState(() {
+        messageEditingController.text = "";
+      });
+    }
+  }
+
+  addOffer() {
+    if (messageEditingController.text.isNotEmpty) {
+      String msgID = FirebaseFirestore.instance
+          .collection("ChatRoom")
+          .doc(widget.chatRoomId)
+          .collection("chats")
+          .doc()
+          .id;
+      Map<String, dynamic> chatOfferMap = {
+        "sendBy": _myName,
+        "message": 'Offer : ${messageEditingController.text}',
+        'time': DateTime.now().millisecondsSinceEpoch,
+        'isOffer': true,
+        'accepted': false,
+        'msgID': msgID,
+        'senderID': FirebaseAuth.instance.currentUser!.uid
+      };
+
+      List<String> users = [widget.targetUser, _myName];
+      Database().addMessage(widget.chatRoomId, chatOfferMap, users, msgID);
 
       setState(() {
         messageEditingController.text = "";
@@ -90,6 +137,7 @@ class _ChatState extends State<ChatRoom> {
                 .copyWith(color: Colors.black)),
         elevation: 0.0,
         centerTitle: false,
+        actionsIconTheme: IconThemeData(color: Colors.black),
       ),
       body: Container(
         child: Stack(
@@ -98,23 +146,34 @@ class _ChatState extends State<ChatRoom> {
             Container(
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 1,
               child: Container(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 color: const Color(0x54FFFFFF),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
                         child: TextField(
                       controller: messageEditingController,
                       style: const TextStyle(color: Colors.white),
-                      decoration: const InputDecoration(
-                          hintText: "Message ...",
+                      decoration: InputDecoration(
+                          hintText: "Message / Offer ...",
                           hintStyle: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
-                          border: InputBorder.none),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(width: 3, color: Colors.blue),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(width: 3, color: Colors.white),
+                            borderRadius: BorderRadius.circular(15),
+                          )),
                     )),
                     const SizedBox(
                       width: 16,
@@ -142,6 +201,55 @@ class _ChatState extends State<ChatRoom> {
                             width: 25,
                           )),
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        addOffer();
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(169, 154, 52, 52),
+                                    Color.fromARGB(153, 236, 10, 10)
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight),
+                              borderRadius: BorderRadius.circular(40)),
+                          padding: const EdgeInsets.all(12),
+                          child: Image.asset(
+                            "assets/images/send.png",
+                            height: 25,
+                            width: 25,
+                          )),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Offers(
+                                      chatRoomId: widget.chatRoomId,
+                                    )));
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                  colors: [
+                                    Color.fromARGB(243, 50, 122, 45),
+                                    Color.fromARGB(153, 10, 236, 97)
+                                  ],
+                                  begin: FractionalOffset.topLeft,
+                                  end: FractionalOffset.bottomRight),
+                              borderRadius: BorderRadius.circular(40)),
+                          padding: const EdgeInsets.all(8),
+                          child: Icon(
+                            IconData(0xe0aa, fontFamily: 'MaterialIcons'),
+                          )),
+                    ),
                   ],
                 ),
               ),
@@ -156,8 +264,10 @@ class _ChatState extends State<ChatRoom> {
 class MessageTile extends StatelessWidget {
   final String message;
   final bool sendByMe;
+  final bool isOffer;
 
-  MessageTile({required this.message, required this.sendByMe});
+  MessageTile(
+      {required this.message, required this.sendByMe, required this.isOffer});
 
   @override
   Widget build(BuildContext context) {
@@ -183,8 +293,18 @@ class MessageTile extends StatelessWidget {
                     bottomRight: const Radius.circular(23)),
             gradient: LinearGradient(
               colors: sendByMe
-                  ? [const Color(0xff007EF4), const Color(0xff2A75BC)]
-                  : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)],
+                  ? (isOffer
+                      ? [
+                          const Color.fromARGB(255, 244, 187, 0),
+                          const Color.fromARGB(255, 244, 187, 0)
+                        ]
+                      : [const Color(0xff007EF4), const Color(0xff2A75BC)])
+                  : (isOffer
+                      ? [
+                          const Color.fromARGB(255, 244, 53, 0),
+                          const Color.fromARGB(255, 244, 53, 0)
+                        ]
+                      : [const Color(0x1AFFFFFF), const Color(0x1AFFFFFF)]),
             )),
         child: Text(message,
             textAlign: TextAlign.start,

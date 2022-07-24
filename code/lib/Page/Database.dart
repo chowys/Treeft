@@ -17,10 +17,9 @@ class Database {
     });
   }
 
-//dont touch for now
-  Future updateUserList(
+  Future<void> updateUserList(
       String username, int transactions, String? uid, String email) async {
-    return await userList.doc(uid).update({
+    return await userList.doc(uid).set({
       'username': username,
       'transactions': transactions,
       'uid': uid,
@@ -61,78 +60,55 @@ class Database {
         .snapshots();
   }
 
-  Future<void> addMessage(String chatRoomId, chatMessageData) async {
+  Future<void> addMessage(String chatRoomId, chatMessageData,
+      List<String> users, String msgID) async {
     FirebaseFirestore.instance
         .collection("ChatRoom")
         .doc(chatRoomId)
         .collection("chats")
-        .add(chatMessageData)
+        .doc(msgID)
+        .set(chatMessageData)
         .catchError((e) {
       print(e.toString());
     });
+
+    //update hasMessages when there is at least 1 message
+    FirebaseFirestore.instance.collection("ChatRoom").doc(chatRoomId).update(
+        {"users": users, "chatroomid": chatRoomId, "hasMessages": true});
   }
 
   getUserChats(String myUserName) async {
     return await FirebaseFirestore.instance
         .collection("ChatRoom")
         .where('users', arrayContains: myUserName)
+        .where("hasMessages", isEqualTo: true)
         .snapshots();
   }
 
-  /*static Stream<List<User>> readUsers() => FirebaseFirestore.instance
-      .collection('UserData')
-      .snapshots()
-      .map((snapshot) =>
-          snapshot.docs.map((doc) => User.fromJson(doc.data())).toList());
+  getOffers(String chatRoomId, String myUserName) async {
+    return await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection('chats')
+        .where('isOffer', isEqualTo: true)
+        .where('sendBy', isNotEqualTo: myUserName)
+        .snapshots();
+  }
 
-  static Future<User?> readUser() async {
-    final user = FirebaseAuth.instance.currentUser;
-    String? uid = user?.uid;
-// Get single document
-    final docUser = FirebaseFirestore.instance.collection('UserData').doc(uid);
-    final snapshot = await docUser.get();
-
-    if (snapshot.exists) {
-      return User.fromJson(snapshot.data()!['transactions']);
-    }
-
-    return null;
-  }*/
-
-  /*Future getTransactions() async {
-    int numTrans = 0;
-
-    try {
-      await userList.getDoc().then((querySnapshot) {
-        querySnapshot.documents.forEach((element) {
-          itemsList.add(element.data);
-        });
-      });
-      return numTrans;
-    } catch (e) {
-      print(e.toString());
-      return null;
-    }
-  }*/
-
+  updateOffer(String chatRoomId, String myUserName, String offer, int time,
+      String msgID) async {
+    await FirebaseFirestore.instance
+        .collection("ChatRoom")
+        .doc(chatRoomId)
+        .collection('chats')
+        .doc(msgID)
+        .update({
+      "sendBy": myUserName,
+      "message": offer,
+      'time': time,
+      'isOffer': true,
+      'accepted': true,
+      'msgID': msgID
+    });
+  }
 }
-
-/*class User {
-  String uid;
-  final String username;
-  int transactions;
-
-  User({this.uid = '', required this.username, required this.transactions});
-
-//same function as the one used in databse class
-  Map<String, dynamic> toJson() => {
-        'uid': uid,
-        'username': username,
-        'transaction': transactions,
-      };
-
-  static User fromJson(Map<String, dynamic> json) => User(
-      uid: json['uid'],
-      username: json['username'],
-      transactions: json['transactions']);
-}*/

@@ -29,9 +29,6 @@ class ProductPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(
-                  onPressed: () {/*add here for direct messaging*/},
-                  icon: Icon(Icons.message_outlined)),
               BlocBuilder<WishlistBloc, WishlistState>(
                 builder: (context, state) {
                   return IconButton(
@@ -120,7 +117,7 @@ class ProductPage extends StatelessWidget {
               children: [
                 ListTile(
                   title: Text(product.description,
-                      style: Theme.of(context).textTheme.bodyText1),
+                      style: Theme.of(context).textTheme.headline5),
                 ),
               ],
             ),

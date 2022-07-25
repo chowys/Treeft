@@ -13,7 +13,7 @@ class Tree extends StatefulWidget {
 
 class _TreeState extends State<Tree> with TickerProviderStateMixin {
   static const String _title = 'Treeft Tree';
-  String tree = "assets/images/Loading.jpg";
+  String tree = "assets/images/load-icon-png-8-removebg-preview.jpg";
   late AnimationController controller;
   int trans = -1;
   String transString = 'Loading';
@@ -50,11 +50,24 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
       title: _title,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            _title,
-            style: TextStyle(color: Colors.black),
-          ),
+          iconTheme: IconThemeData(color: Colors.black), //icon colour
           backgroundColor: Color(0xffFFDE59),
+          title: Container(
+            color: Color(0xffFFDE59),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Text(_title,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline2!
+                    .copyWith(color: Colors.black)),
+          ),
+          // appBar: AppBar(
+          //   title: const Text(
+          //     _title,
+          //     style: TextStyle(color: Colors.black),
+          //   ),
+          //   backgroundColor: Color(0xffFFDE59),
+          // ),
         ),
         body: Container(
           width: double.infinity,
@@ -90,7 +103,7 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
     } else if (trans < 10 && trans >= 5) {
       return "assets/images/growingtree.png";
     } else if (trans == -1) {
-      return "assets/images/loading.png";
+      return "assets/images/load-icon-png-8-removebg-preview.png";
     }
     return "assets/images/Tree1.png";
   }

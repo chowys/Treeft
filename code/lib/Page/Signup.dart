@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../Reusable/reusable_widget.dart';
 import 'Homescreen.dart';
 import 'Database.dart';
@@ -29,6 +29,7 @@ class _SignupState extends State<Signup> {
       backgroundColor: Color(0xffFFDE59),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Color(0xffFFDE59),
         elevation: 0,
         title: const Text(
@@ -135,8 +136,9 @@ class _SignupState extends State<Signup> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Homescreen()));
-                      } catch (e) {
-                        print(e.toString());
+                      } on FirebaseAuthException catch (error) {
+                        Fluttertoast.showToast(
+                            msg: error.message!, gravity: ToastGravity.TOP);
                       }
                     }
                   })

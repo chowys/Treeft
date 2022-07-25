@@ -32,8 +32,8 @@ class ProductCard extends StatelessWidget {
   const ProductCard.summary({
     Key? key,
     required this.product,
-    this.widthFactor = 2.25,
-    this.height = 80,
+    this.widthFactor = 3,
+    this.height = 150,
     this.isCatalog = false,
     this.isWishlist = false,
     this.isSummary = true,
@@ -66,7 +66,7 @@ class ProductCard extends StatelessWidget {
               child: Row(
                 children: [
                   ProductImage(
-                    adjWidth: 100,
+                    adjWidth: 150,
                     product: product,
                     height: height,
                   ),

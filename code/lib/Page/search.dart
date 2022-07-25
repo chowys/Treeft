@@ -66,6 +66,7 @@ class _SearchState extends State<Search> {
     return Scaffold(
       backgroundColor: Color.fromARGB(137, 34, 33, 33),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: const Color(0xffFFDE59),
         title: Text('Search',
             style: Theme.of(context)

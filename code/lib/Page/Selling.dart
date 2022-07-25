@@ -70,9 +70,14 @@ class _SellingState extends State<Selling> {
             );
           },
         ),
-        title: Text(
-          "Add Product",
-          style: TextStyle(color: Colors.black),
+        title: Container(
+          color: Color(0xffFFDE59),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          child: Text('Add Product',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline2!
+                  .copyWith(color: Colors.black)),
         ),
       ),
       body: Form(
@@ -195,8 +200,9 @@ class _SellingState extends State<Selling> {
                       ),
                     ),
                     ElevatedButton(
-                      style: TextButton.styleFrom(
-                        primary: Colors.black,
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xffFFDE59),
+                        onPrimary: Colors.black,
                       ),
                       child: Text('Add product',
                           style: TextStyle(color: Colors.black)),
@@ -347,10 +353,8 @@ class _SellingState extends State<Selling> {
             String username = ds.data()!['username'];
 
             //remember to change
-            if (trans <= 5 && trans >= 0) {
+            if (trans <= 10 && trans >= 0) {
               featured = false;
-            } else if (trans > 5 && trans <= 10) {
-              featured = true;
             } else if (trans > 10 && trans <= 15) {
               featured = true;
             }

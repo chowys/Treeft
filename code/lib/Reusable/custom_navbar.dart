@@ -38,15 +38,7 @@ class CustomNavBar extends StatelessWidget {
                 );
               }),
           IconButton(
-              icon: Icon(CupertinoIcons.settings),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Settings()),
-                );
-              }),
-          IconButton(
-              icon: Icon(CupertinoIcons.lock),
+              icon: Icon(Icons.lock),
               onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
                   print("Signed out");

@@ -10,6 +10,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../Reusable/HelperMethods.dart';
 import '../Reusable/reusable_widget.dart';
 import 'Resetpassword.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LogIn extends StatefulWidget {
   static const String routeName = '/login';
@@ -61,38 +62,42 @@ class _LogInState extends State<LogIn> {
                     height: 5,
                   ),
                   forgetPassword(context),
-                  signingnresetButton(context, "SIGN IN", () {
+                  signingnresetButton(context, "SIGN IN", () async {
                     if (_key.currentState!.validate()) {
-                      FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: _emailTextController.text,
-                              password: _passwordTextController.text)
-                          .then((value) {
-                        //chat method
-                        HelperFunctions.saveUserLoggedInSharedPreference(true);
-                        //chat method
-                        HelperFunctions.saveUserEmailSharedPreference(
-                            _emailTextController.text);
+                      try {
+                        await FirebaseAuth.instance
+                            .signInWithEmailAndPassword(
+                                email: _emailTextController.text,
+                                password: _passwordTextController.text)
+                            .then((value) {
+                          //chat method
+                          HelperFunctions.saveUserLoggedInSharedPreference(
+                              true);
+                          //chat method
+                          HelperFunctions.saveUserEmailSharedPreference(
+                              _emailTextController.text);
 
-                        Database()
-                            .getUserByEmail(_emailTextController.text)
-                            .then((val) {
-                          snapshotUserInfo = val;
-                          HelperFunctions.saveUserNameSharedPreference(
-                              snapshotUserInfo.docs[0]['username']);
-                          print(
-                              "${snapshotUserInfo.docs[0]['username']} is your Username");
+                          Database()
+                              .getUserByEmail(_emailTextController.text)
+                              .then((val) {
+                            snapshotUserInfo = val;
+                            HelperFunctions.saveUserNameSharedPreference(
+                                snapshotUserInfo.docs[0]['username']);
+                            print(
+                                "${snapshotUserInfo.docs[0]['username']} is your Username");
+                          });
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Homescreen()));
                         });
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Homescreen()));
-                      }).onError((error, stackTrace) {
-                        print("Error ${error.toString()}");
-                      });
+                      } on FirebaseAuthException catch (error) {
+                        Fluttertoast.showToast(
+                            msg: error.message!, gravity: ToastGravity.TOP);
+                      }
                     }
                   }),
-                  signUpOption()
+                  signUpOption(),
                 ],
               ),
             ),
@@ -107,7 +112,11 @@ class _LogInState extends State<LogIn> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Text("Don't have account?",
-            style: TextStyle(color: Colors.black)),
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 14,
+              fontFamily: 'Avenir',
+            )),
         GestureDetector(
           onTap: () {
             Navigator.push(
@@ -115,7 +124,12 @@ class _LogInState extends State<LogIn> {
           },
           child: const Text(
             " Sign Up",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              fontFamily: 'Avenir',
+            ),
           ),
         )
       ],

@@ -69,18 +69,12 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
             children: <Widget>[
               Image.asset(generateTree(), height: 300, width: 300),
               LinearPercentIndicator(
-                width: 180.0,
+                width: 248.7,
                 percent: generateEXP(),
                 animation: true,
                 animationDuration: 1500,
-                leading: const Text(
-                  "Current Lvl",
-                  style: TextStyle(fontSize: 20),
-                ),
-                trailing: const Text(
-                  "Next Lvl",
-                  style: TextStyle(fontSize: 20),
-                ),
+                leading: generateLeftLvl(),
+                trailing: generateRightLvl(),
                 progressColor: Colors.green,
               ),
             ],
@@ -91,8 +85,6 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   }
 
   String generateTree() {
-    //print("tree");
-    //print(trans);
     if (trans < 5 && trans >= 0) {
       return "assets/images/Sapling.png";
     } else if (trans < 10 && trans >= 5) {
@@ -101,6 +93,34 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
       return "assets/images/loading.png";
     }
     return "assets/images/Tree1.png";
+  }
+
+  Widget generateLeftLvl() {
+    if (trans == -1) {
+      return Text(
+        "Lvl --",
+        style: TextStyle(fontSize: 20),
+      );
+    }
+    ;
+    return Text(
+      "Lvl ${trans}",
+      style: TextStyle(fontSize: 20),
+    );
+  }
+
+  Widget generateRightLvl() {
+    if (trans == -1) {
+      return Text(
+        "Lvl --",
+        style: TextStyle(fontSize: 20),
+      );
+    }
+    ;
+    return Text(
+      "Lvl ${trans + 1}",
+      style: TextStyle(fontSize: 20),
+    );
   }
 
   double generateEXP() {
@@ -133,34 +153,3 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
     });
   }
 }
-
-/*class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}*/
-
-/*class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  @override
-  Widget build(BuildContext context) {
-    final ButtonStyle style = ElevatedButton.styleFrom(
-        primary: Color(0xffFFDE59), textStyle: const TextStyle(fontSize: 20));
-
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const SizedBox(height: 30),
-          ElevatedButton(
-            style: style,
-            onPressed: () {
-            },
-            child: const Text('Update'),
-          ),
-        ],
-      ),
-      
-    );
-  }
-  }*/

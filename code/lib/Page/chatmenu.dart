@@ -69,18 +69,6 @@ class _ChatMenuState extends State<ChatMenu> {
                 .copyWith(color: Colors.black)),
         elevation: 0.0,
         centerTitle: false,
-        /*actions: [
-          GestureDetector(
-            onTap: () {
-              AuthService().signOut();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => Authenticate()));
-            },
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.exit_to_app)),
-          )
-        ],*/
       ),
       body: Container(
         child: chatRoomsList(),

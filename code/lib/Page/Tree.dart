@@ -100,7 +100,7 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   String generateTree() {
     if (trans < 5 && trans >= 0) {
       return "assets/images/Sapling.png";
-    } else if (trans < 10 && trans >= 5) {
+    } else if (trans <= 10 && trans >= 5) {
       return "assets/images/growingtree.png";
     } else if (trans == -1) {
       return "assets/images/load-icon-png-8-removebg-preview.png";

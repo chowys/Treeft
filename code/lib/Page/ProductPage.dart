@@ -29,7 +29,9 @@ class ProductPage extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.message_outlined)),
+              IconButton(
+                  onPressed: () {/*add here for direct messaging*/},
+                  icon: Icon(Icons.message_outlined)),
               BlocBuilder<WishlistBloc, WishlistState>(
                 builder: (context, state) {
                   return IconButton(

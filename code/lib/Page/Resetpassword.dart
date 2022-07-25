@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../Reusable/reusable_widget.dart';
 import 'Homescreen.dart';
 
@@ -24,6 +24,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       backgroundColor: Color(0xffFFDE59),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Color(0xffFFDE59),
         elevation: 0,
         title: const Text(
@@ -50,12 +51,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                   const SizedBox(
                     height: 20,
                   ),
-                  signingnresetButton(context, "RESET PASSWORD", () {
+                  signingnresetButton(context, "RESET PASSWORD", () async {
                     if (_key.currentState!.validate()) {
-                      FirebaseAuth.instance
-                          .sendPasswordResetEmail(
-                              email: _emailTextController.text)
-                          .then((value) => Navigator.of(context).pop());
+                      try {
+                        await FirebaseAuth.instance
+                            .sendPasswordResetEmail(
+                                email: _emailTextController.text)
+                            .then((value) => Navigator.of(context).pop());
+                      } on FirebaseAuthException catch (error) {
+                        Fluttertoast.showToast(
+                            msg: error.message!, gravity: ToastGravity.TOP);
+                      }
                     }
                   })
                 ],

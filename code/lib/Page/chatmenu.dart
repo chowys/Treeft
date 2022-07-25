@@ -61,6 +61,7 @@ class _ChatMenuState extends State<ChatMenu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: Color(0xffFFDE59),
         title: Text('Chats',
             style: Theme.of(context)
@@ -87,7 +88,10 @@ class _ChatMenuState extends State<ChatMenu> {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Color(0xffFFDE59),
-        child: Icon(Icons.search),
+        child: Icon(
+          Icons.search,
+          color: Colors.black,
+        ),
         onPressed: () {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => Search()));

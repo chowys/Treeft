@@ -5,7 +5,7 @@ Level Tree
 Proposed Level of Achievement:
 Apollo 11
 
-Motivation
+#Motivation
 
 Students are constantly moving in and out of NUS’ student residences (Halls, Residential Colleges etc) due to application eligibility and limits and stay periods for different students.
 
@@ -16,7 +16,7 @@ Disposed items can range from accessories to furniture which either leads to inc
 As such, we would like to dive deeper into this issue by creating a solution that benefits both the students and management and at the same time, allowing ourselves to gain more experience in the app development field.
 
 
-Vision
+#Vision
 Treeft will be a shopping application which leverages on the second hand purchases between students in NUS Residences. Since it is an application targeting NUS students, transactions and deliveries can be done smoothly and conveniently.
 Treeft separates itself from the crowd with its in built game whereby the Treeft tree ‘grows’ after every transaction through the platform.
 Treeft is inspired by the concept of Carousell but with an emphasis on trying to cultivate thrifty students and help to protect the environment with a creative twist.
@@ -25,7 +25,7 @@ Ultimately, we envision Treeft to be an irreplaceable app for all student reside
 
 
 
-User Stories
+#User Stories
 As a user, I want to cultivate a habit of saving.
 As a user, I want to be able to make transaction with ease.
 As a user, I want an incentive to continue using the application.
@@ -34,7 +34,7 @@ As a user, I want to be able to communicate to others for each transaction so th
 As a user, I want to be able to save my product listing for future references.
 
 
-Competitor Research
+#Competitor Research
 
 Carousell: Lack of incentive to use the application and doesn’t cultivate the habit of thrifting. It is just merely a convenient platform for consumers to consumers transactions. 
 
@@ -42,13 +42,13 @@ Forest: It is a productivity app that helps people beat their phone addiction. W
 
 
 
-Scope of Project
+#Scope of Project
 
 Treeft is a shopping application which provides a browsing interface for users to browse items (More specifically, second hand) which are listed by other users. To enhance the user’s experience, Treeft will also provide a chat function to facilitate transactions. 
 
 In addition, another core function of Treeft is the Treeft tree. Treeft tree is an inbuilt ‘tree’ that ‘grows’ with every transaction conducted via the application itself.
 
-Features to be completed by the Milestone 3:
+#Features:
 
 Treeft Main Browsing Page with Database
 Users will utilise this page for browsing and selecting listings.
@@ -67,3 +67,4 @@ Users are able to add their desired items to their wishlist page for future refe
 ## Tech Stack
 * Flutter
 * Dart
+* Firebase

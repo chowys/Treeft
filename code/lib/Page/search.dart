@@ -46,7 +46,6 @@ class _SearchState extends State<Search> {
             itemBuilder: (context, index) {
               return SearchTile(
                 userName: searchSnapshot.docs[index]["username"],
-                userEmail: searchSnapshot.docs[index]["email"],
               );
             })
         : Container();
@@ -110,7 +109,7 @@ class _SearchState extends State<Search> {
                                 begin: FractionalOffset.topLeft,
                                 end: FractionalOffset.bottomRight),
                             borderRadius: BorderRadius.circular(40)),
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(9),
                         child: const Icon(
                             IconData(0xe567, fontFamily: 'MaterialIcons'))),
                   ),
@@ -186,7 +185,7 @@ class _SearchState extends State<Search> {
     print(roomExists);
   }*/
 
-  Widget SearchTile({required userName, required userEmail}) {
+  Widget SearchTile({required userName}) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
@@ -198,10 +197,6 @@ class _SearchState extends State<Search> {
                 userName,
                 style: TextStyle(color: Colors.white, fontSize: 16),
               ),
-              Text(
-                userEmail,
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              )
             ],
           ),
           Spacer(),

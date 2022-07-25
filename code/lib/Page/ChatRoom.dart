@@ -28,7 +28,6 @@ class _ChatState extends State<ChatRoom> {
   void initState() {
     getUserInfo();
     print(Database().getConversationMessages(widget.chatRoomId));
-    //.then is used on a null value need check why
     Database().getConversationMessages(widget.chatRoomId).then((val) async {
       print("${val} is val");
 
@@ -52,7 +51,7 @@ class _ChatState extends State<ChatRoom> {
         return snapshot.hasData
             ? SizedBox(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * .72,
+                height: MediaQuery.of(context).size.height * .735,
                 child: ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     itemBuilder: (context, index) {

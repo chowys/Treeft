@@ -27,10 +27,15 @@ Ultimately, we envision Treeft to be an irreplaceable app for all student reside
 
 #User Stories
 As a user, I want to cultivate a habit of saving.
+
 As a user, I want to be able to make transaction with ease.
+
 As a user, I want an incentive to continue using the application.
+
 As a user, I want to use an application which is aethetically pleasing.
+
 As a user, I want to be able to communicate to others for each transaction so that I can enquire more on the purchase.
+
 As a user, I want to be able to save my product listing for future references.
 
 

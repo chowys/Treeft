@@ -355,7 +355,7 @@ class _SellingState extends State<Selling> {
             //remember to change
             if (trans <= 10 && trans >= 0) {
               featured = false;
-            } else if (trans > 10 && trans <= 15) {
+            } else if (trans > 10) {
               featured = true;
             }
 

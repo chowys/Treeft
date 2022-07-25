@@ -64,7 +64,7 @@ class _OffersState extends State<Offers> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xffFFDE59),
-        title: Text('All Offers',
+        title: Text('Accept Offers',
             style: Theme.of(context)
                 .textTheme
                 .headline2!

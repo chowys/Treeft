@@ -128,6 +128,7 @@ class _ChatState extends State<ChatRoom> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(137, 34, 33, 33),
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Colors.black),
         backgroundColor: const Color(0xffFFDE59),
         title: Text(widget.targetUser,
             style: Theme.of(context)

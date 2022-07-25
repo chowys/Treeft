@@ -255,7 +255,7 @@ class ProductInformation extends StatelessWidget {
               Theme.of(context).textTheme.headline5!.copyWith(color: fontColor),
         ),
         Text(
-          '\$${product.price}',
+          '\$${(product.price).toStringAsFixed(2)}',
           style:
               Theme.of(context).textTheme.headline6!.copyWith(color: fontColor),
         ),

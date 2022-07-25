@@ -91,7 +91,7 @@ class ProductPage extends StatelessWidget {
                               .headline5!
                               .copyWith(color: Colors.white),
                         ),
-                        Text('\$${product.price}',
+                        Text('\$${(product.price).toStringAsFixed(2)}',
                             style: Theme.of(context)
                                 .textTheme
                                 .headline5!

@@ -92,6 +92,7 @@ class Database {
         .collection('chats')
         .where('isOffer', isEqualTo: true)
         .where('sendBy', isNotEqualTo: myUserName)
+        .where('accepted', isEqualTo: false)
         .snapshots();
   }
 

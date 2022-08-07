@@ -68,45 +68,6 @@ class _SignupState extends State<Signup> {
                   ),
                   signingnresetButton(context, "SIGN UP", () async {
                     if (_key.currentState!.validate()) {
-                      /*FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text)
-                        .then((value) {
-                      print("Account created successfully");
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Homescreen()));
-                    }).onError((error, stackTrace) {
-                      print("Error ${error.toString()}");
-                    });*/
-
-                      /*FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text)
-                        .then((value) {
-                      print("Account created successfully");
-      
-      
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Homescreen()));
-      
-                      if (value != null && value.user != null) {
-                        FirebaseFirestore.instance
-                            .collection('UserData')
-                            .doc(value.user?.uid)
-                            .set({
-                          "email": value.user?.email,
-                          "uid": value.user?.uid,
-                          "Transactions": 0
-                        });
-      
-                        //create another collection for listings
-                      }
-      
-                    }).onError((error, stackTrace) {
-                      print("Error ${error.toString()}");
-                    });*/
                       try {
                         //Creates Account
                         UserCredential cred = await FirebaseAuth.instance

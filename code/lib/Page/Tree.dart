@@ -61,13 +61,6 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
                     .headline2!
                     .copyWith(color: Colors.black)),
           ),
-          // appBar: AppBar(
-          //   title: const Text(
-          //     _title,
-          //     style: TextStyle(color: Colors.black),
-          //   ),
-          //   backgroundColor: Color(0xffFFDE59),
-          // ),
         ),
         body: Container(
           width: double.infinity,
@@ -137,8 +130,6 @@ class _TreeState extends State<Tree> with TickerProviderStateMixin {
   }
 
   double generateEXP() {
-    //print('exp');
-    //print(trans);
     if (trans < 0) {
       return 0.00;
     } else if (trans <= 5 && trans >= 0) {

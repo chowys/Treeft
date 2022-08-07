@@ -187,52 +187,6 @@ class ProductActions extends StatelessWidget {
   }
 }
 
-// @override
-// Widget build(BuildContext context) {
-//   return Row(
-//     children: [
-//       Expanded(
-//         flex: 3,
-//         child: Expanded(
-//           children: [
-//             IconButton(
-//               onPressed: () {},
-//               icon: Icon(
-//                 (Icons.message),
-//                 color: Colors.white,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-// isWishList
-//     ? Expanded(
-//         child: BlocBuilder<WishlistBloc, WishlistState>(
-//           builder: (context, state) {
-//             return IconButton(
-//                 onPressed: () {
-//                   context.read<WishlistBloc>().add(
-//                       RemoveProductFromWishlist(product));
-
-//                   final snackBar = SnackBar(
-//                       content:
-//                           Text('Remove from Wishlist'));
-//                   ScaffoldMessenger.of(context)
-//                       .showSnackBar(snackBar);
-//                 },
-//                 icon: Icon(
-//                   (Icons.delete),
-//                   color: Colors.white,
-//                 ));
-//           },
-//         ),
-//       )
-//          : SizedBox(),
-//       ],
-//     );
-//   }
-// }
-
 class ProductInformation extends StatelessWidget {
   const ProductInformation({
     Key? key,

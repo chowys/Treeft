@@ -49,16 +49,6 @@ class _SearchState extends State<Search> {
               );
             })
         : Container();
-//to ensure promise is kept and no runtime if back button is pressed when no search is made
-    /*ListView.builder(
-        itemCount: searchSnapshot.docs.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) {
-          return SearchTile(
-            userName: "No Results",
-            userEmail: "No Results",
-          );
-        });*/
   }
 
   @override

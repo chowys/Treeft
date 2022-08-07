@@ -246,7 +246,7 @@ class _ChatState extends State<ChatRoom> {
                                   end: FractionalOffset.bottomRight),
                               borderRadius: BorderRadius.circular(40)),
                           padding: const EdgeInsets.all(8),
-                          child: const Icon(
+                          child: Icon(
                             IconData(0xe0aa, fontFamily: 'MaterialIcons'),
                           )),
                     ),

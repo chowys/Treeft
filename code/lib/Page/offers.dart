@@ -105,11 +105,10 @@ class _OfferView extends State<OffersTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        print('Accepting');
-        //accepts offer and making them disappear by updating the accepted field in firestore
+        //accepts offer and turn them from red to green by updating the accepted field in firestore
         Database().updateOffer(widget.chatRoomId, widget.targetUserName,
             widget.offerDetails, widget.timeOfOffer, widget.msgID);
-        accepted = false;
+        accepted = true;
         updateAccepted();
 
         String _myUsername = widget.chatRoomId
@@ -192,7 +191,7 @@ class _OfferView extends State<OffersTile> {
                   : BoxDecoration(
                       color: Color.fromARGB(255, 33, 243, 138),
                       borderRadius: BorderRadius.circular(30)),
-              child: const Icon(IconData(0xf584, fontFamily: 'MaterialIcons')),
+              child: Icon(IconData(0xf584, fontFamily: 'MaterialIcons')),
             ),
             SizedBox(
               width: 12,

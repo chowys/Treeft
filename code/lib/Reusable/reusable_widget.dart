@@ -9,9 +9,10 @@ Image logoWidget(String imageName) {
   );
 }
 
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller) {
-  return TextField(
+TextFormField reusableTextField(String text, IconData icon, bool isPasswordType,
+    TextEditingController controller, dynamic validator) {
+  return TextFormField(
+    validator: validator,
     controller: controller,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,

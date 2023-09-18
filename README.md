@@ -5,6 +5,8 @@ Level Tree
 Proposed Level of Achievement:
 Apollo 11
 
+![5161](https://github.com/chowys/Treeft/assets/100280583/0235248d-1516-4a92-9039-ade41e810edc)
+
 ## Motivation
 
 Students are constantly moving in and out of NUS’ student residences (Halls, Residential Colleges etc) due to application eligibility and limits and stay periods for different students.
